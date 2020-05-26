@@ -1,0 +1,286 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""This is a framework to generate movies from Cactus data.
+The available movies are plugins located in the video subpackage.
+Movies are always saved as single frame images, and optionally
+also as video files. Interrupted movies can be resumed.
+"""
+
+import sys
+import os
+import gc
+import pkgutil
+import argparse
+
+import simvideo.video
+from postcactus.simdir import SimDir
+
+
+def import_by_name(name):
+  fqmn = "simvideo.video.%s" % name
+  __import__(fqmn)
+  return sys.modules[fqmn]
+#
+ 
+def create_moviedir(mdir, mname, resume=False):
+  mpath   = os.path.join(mdir, mname)
+  mexists = os.path.isdir(mpath)
+  if resume:
+    if not mexists:
+      msg = "Cannot resume: folder %s not found"
+      raise RuntimeError(msg % mpath)
+    #
+  else:
+    if mexists:
+      if os.listdir(mpath):
+        msg = "Movie folder %s already contains files, aborting."
+        raise RuntimeError(msg % mpath)
+      #
+    else:
+      os.mkdir(mpath)
+      if not os.path.isdir(mpath):
+        msg = "Error creating movie folder %s"
+        raise RuntimeError(msg % mpath)
+      #
+    #
+  #
+  return mpath
+#
+
+def select_frames(mov, start=None, stop=None, every=1):
+  frames  = mov.frames
+  idx     = range(0, len(frames), every)
+  if start is not None:
+    idx   = [i for i in idx if (frames[i] >= start)]
+  if stop is not None:
+    idx   = [i for i in idx if (frames[i] <= stop)]
+  #
+  fr      = [frames[i] for i in idx] 
+  return idx
+#
+
+def write_frames(mov, mdir, mname, frselect,
+                 skip_existing=False, fmt='png'):
+  bname       = os.path.join(mdir, mname)
+  for m, n in enumerate(frselect, 1):
+    f     = mov.frames[n]
+    fname = "%s.%05d.%s" % (bname, n, fmt)
+    
+    print "processing frame %d (index %s)" % (n,f)
+    
+    if skip_existing:
+      if os.path.isfile(fname):
+        print "  frame %d already present, skipping." % n
+        continue
+      #
+    #
+    
+    print "  loading data"
+    mov.load_data(f)
+    
+    print "  rendering"
+    mov.make_frame(fname)
+    
+    gc.collect()
+    print "  done." 
+    nrem  = len(frselect) - m
+    if (nrem > 0):
+      print "  %d frames remaining." % nrem
+    #
+  #
+#
+
+
+def write_snapshot(mov, mdir, mname, frselect, fmt='png'):
+  bname   = os.path.join(mdir, mname)
+  fname   = "%s.%s" % (bname, fmt)
+  f       = mov.frames[frselect]
+  print "creating snapshot for frame %d (index %s)" % (frselect, f)  
+  print "  loading data"
+  mov.load_data(f)
+  print "  rendering"
+  mov.make_frame(fname)
+  print "  done." 
+#
+
+def convert(mdir, mname, fmt, xres=None, yres=None, fps=25,
+            author=None, comment=None, title=None):
+  codecs  = {'webm':'libvpx',
+             'mp4':'libx264',
+             'mov':'libx264'}
+ 
+  codec   = codecs[fmt]
+  bitr    = 10
+  quality = 12
+  bname   = os.path.join(mdir, mname)
+  fnout   = "%s.%s" % (bname, fmt)
+  if title is None:
+    title=mname
+  #
+  meta    = {'title':title, 
+             'artist':author, 'comment':comment}
+
+  cmd   = ['ffmpeg',
+           '-pattern_type glob',
+           '-i "%s.*.png"' % bname]
+  
+  if not ((xres is None) and (yres is None)):
+    sx  = -1 if (xres is None) else xres
+    sy  = -1 if (yres is None) else yres
+    cmd +=  ["-vf scale=%d:%d" % (sx,sy)]
+  #
+  for mdk,mdv in meta.items():
+    if mdv is not None: 
+      cmd += ['-metadata %s="%s"' % (mdk, mdv)]
+    #
+  #
+  cmd  += ["-r %f" % fps,
+           "-c:v %s" % codec,
+           "-b:v %dM" % bitr,
+           "-crf %d" % quality,
+           "-auto-alt-ref 0",
+           fnout]
+           
+  os.system(" ".join(cmd))
+  if (not os.path.isfile(fnout)):
+    raise RuntimeError("Creating the movie failed somehow.")
+  #
+#
+
+def write_arguments(mdir, mname):
+  aname = "%s.args" % os.path.join(mdir, mname)
+  args  = sys.argv[1:]
+  with open(aname,'w') as f:
+    f.write("\n".join(args))
+  #
+#
+
+def get_available_movies():
+  pkgdir    = os.path.dirname(simvideo.video.__file__)
+  return {name:mfind.find_module(name).load_module(name) 
+               for mfind,name,isp in pkgutil.iter_modules([pkgdir])}
+#
+
+def std_movie_options(parser):
+  parstd = parser.add_argument_group('Standard movie options')
+  parstd.add_argument('--datadir', default='.', 
+        metavar='<path>',
+        help="Path to simulation data (defaults to %(default)s)")  
+  parstd.add_argument('--moviedir', default='.', 
+        metavar='<path>',
+        help="Path for movie and temporary files (defaults to %(default)s)") 
+  parstd.add_argument('--resume', action='store_true', 
+        help="Continue interrupted movie.")
+  parstd.add_argument('--convert', action='store_true', 
+        help="Do not create movie, just convert finished movie to given formats.")
+  parstd.add_argument('--moviename',  
+        metavar='<string>',
+        help="Name of movie file, without extension. (defaults to selected movie)")  
+  parstd.add_argument('--author', metavar='<string>',
+        help="Movie metadata: author field")  
+  parstd.add_argument('--comment', metavar='<string>',
+        help="Movie metadata: comment field")  
+  parstd.add_argument('--title', metavar='<string>',
+        help="Movie metadata: title field")  
+  parstd.add_argument('--xres', type=int, default=1024, 
+        metavar='<integer>',
+        help="Resolution x (defauts to %(default)s)")
+  parstd.add_argument('--yres', type=int, default=768, 
+        metavar='<integer>',
+        help="Resolution y (defaults to %(default)s)")
+  parstd.add_argument('--format', dest='fmt', nargs='*',
+        metavar='<extension>',  default=['webm'],
+        help="Movie formats to create (defaults to %(default)s)")  
+  #~ parstd.add_argument('--codec', default='libx264', 
+        #~ metavar='<string>',
+        #~ help="Video codec (defaults to %(default)s, see ffmpeg -codecs)")  
+  #~ parstd.add_argument('--ffmpeg-args', 
+        #~ default='-crf 8', 
+        #~ metavar='<string>',
+        #~ help="Encoding options for ffmpeg (defaults to %(default)s)")  
+  parstd.add_argument('--fps', type=float, default=25.0,
+        metavar='<integer>',
+        help="Framerate of movie (defaults to %(default)s)")  
+  #~ parstd.add_argument('--bitrate', type=int, default=None, 
+        #~ metavar='<integer>',
+        #~ help="Bitrate of movie (default: auto)")  
+  parstd.add_argument('--start', type=int, default=None,
+        metavar='<integer>',
+        help="First frame to render (defaults to first frame)")
+  parstd.add_argument('--stop', type=int, default=None,
+        metavar='<integer>',
+        help="Last frame to render (defaults to final frame)")
+  parstd.add_argument('--every', type=int, default=1,
+        metavar='<integer>',
+        help="Render only every Nth frame (defaults to %(default)s)")      
+  parstd.add_argument('--snapshot', action='store_true', 
+        help="Render only one frame specified by --start, save as pdf.")
+  parser.add_argument('--debug', action='store_true', 
+      help="Show debug information.")
+#
+
+def main(movmod, opt):
+  movname = opt.moviename if opt.moviename else opt.movie
+  movdesc = movmod.__doc__ if (opt.comment is None) else opt.comment
+  movcls  = movmod.Movie
+
+  mdir    = create_moviedir(opt.moviedir, movname, 
+            opt.resume or opt.convert)
+
+  if not opt.convert:
+    sd      = SimDir(opt.datadir)
+    mov     = movcls(opt)
+    mov.prepare(opt, sd)
+    if not opt.resume:
+      write_arguments(mdir, movname)
+    #
+    fridx   = select_frames(mov, opt.start, opt.stop, opt.every)
+    if not fridx:
+      raise RuntimeError("empty frame selection")
+    #
+    if opt.snapshot:
+      write_snapshot(mov, mdir, movname, fridx[0])
+    else:
+      write_frames(mov, mdir, movname, fridx, skip_existing=opt.resume)
+    #
+  #
+  if not opt.snapshot:
+    for fmt in opt.fmt:
+      convert(mdir, movname, fmt, fps=opt.fps, title=opt.title, 
+              author=opt.author, comment=movdesc)
+    #
+  #
+  print "All done."
+#
+
+
+allmov = get_available_movies()
+parser = argparse.ArgumentParser(description=__doc__, 
+                                 fromfile_prefix_chars='@')
+
+subparsers = parser.add_subparsers(dest='movie', 
+                                   title='Movie selection', 
+                                   help='Available movies')
+for name,mov in allmov.items():
+  mvparser = subparsers.add_parser(name, help=mov.__doc__)
+  std_movie_options(mvparser)
+  mov.custom_options(mvparser)
+#
+
+opt       = parser.parse_args()
+movmod    = allmov[opt.movie]
+
+if opt.debug:
+  main(movmod, opt)
+else:
+  try:
+    main(movmod, opt)
+  except Exception,inst:
+    print 'Failed (',inst,').'
+    sys.exit(1)
+  except:
+    print 'Failed mysteriously.'
+    sys.exit(1)
+  #
+#
+    
