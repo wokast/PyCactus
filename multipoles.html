@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Multipole Component Data &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compute Fourier Spectra" href="fourier_util.html" />
+    <link rel="prev" title="Get Gravitational Wave Data" href="cactus_gwsignal.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="fourier_util.html" title="Compute Fourier Spectra"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cactus_gwsignal.html" title="Get Gravitational Wave Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Multipole Component Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.cactus_multipoles">
+<span id="get-multipole-component-data"></span><h1>Get Multipole Component Data<a class="headerlink" href="#module-postcactus.cactus_multipoles" title="Permalink to this headline">¶</a></h1>
+<p>This module provides access to data saved by the multipoles thorn.</p>
+<p>The main class is <a class="reference internal" href="#postcactus.cactus_multipoles.CactusMultipoleDir" title="postcactus.cactus_multipoles.CactusMultipoleDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusMultipoleDir</span></code></a>, which is 
+provided by <a class="reference internal" href="simdir.html#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimDir</span></code></a> instances.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_multipoles.CactusMultipoleDir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_multipoles.</span></span><span class="sig-name descname"><span class="pre">CactusMultipoleDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_multipoles.CactusMultipoleDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides access to all multipole data of a simulation.</p>
+<p>The multipole data for a given variable is accessed as dictionary 
+style, returning <a class="reference internal" href="#postcactus.cactus_multipoles.MultipoleDetColl" title="postcactus.cactus_multipoles.MultipoleDetColl"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipoleDetColl</span></code></a> which represents the 
+data for one variable on the available surfaces. The ‘in’ operator is 
+supported to check if a variable has data.</p>
+<p>The constructor is not intended for direct use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sd</strong> (<a class="reference internal" href="simdir.html#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimDir</span></code></a> instance.) – Simulation directory.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_multipoles.CactusMultipoleDir.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_multipoles.CactusMultipoleDir.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain data for a given variable, or a default if not available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_multipoles.CactusMultipoleDir.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_multipoles.CactusMultipoleDir.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all available variables.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_multipoles.MultipoleDet">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_multipoles.</span></span><span class="sig-name descname"><span class="pre">MultipoleDet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_multipoles.MultipoleDet" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class collects multipole components on a spherical surface.</p>
+<p>It works as a dictionary in terms of the component as a tuple (l,m),
+returning a <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a> object. Alternatively, it can
+be called as a function(l,m). Iteration is supported and yields 
+tuples (l,m,data).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_multipoles.MultipoleDetColl">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_multipoles.</span></span><span class="sig-name descname"><span class="pre">MultipoleDetColl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_multipoles.MultipoleDetColl" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class collects available surfaces with multipole data.</p>
+<p>It works as a dictionary in terms of spherical surface radius,
+returning a <a class="reference internal" href="#postcactus.cactus_multipoles.MultipoleDet" title="postcactus.cactus_multipoles.MultipoleDet"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipoleDet</span></code></a> object. Iteration is supported,
+sorted by ascending radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>radii</strong> – Available surface radii.</p></li>
+<li><p><strong>available_lm</strong> – Available components as tuple (l,m).</p></li>
+<li><p><strong>available_l</strong> – List of available “l”.</p></li>
+<li><p><strong>available_m</strong> – List of available “m”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cactus_gwsignal.html"
+                        title="previous chapter">Get Gravitational Wave Data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fourier_util.html"
+                        title="next chapter">Compute Fourier Spectra</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/multipoles.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="fourier_util.html" title="Compute Fourier Spectra"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cactus_gwsignal.html" title="Get Gravitational Wave Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Multipole Component Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

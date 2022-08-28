@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Work with Simulation Directories &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Representation of Grid Data" href="grid_data.html" />
+    <link rel="prev" title="Basic Example" href="examples/basic/basic_example.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grid_data.html" title="Representation of Grid Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples/basic/basic_example.html" title="Basic Example"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Work with Simulation Directories</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.simdir">
+<span id="work-with-simulation-directories"></span><h1>Work with Simulation Directories<a class="headerlink" href="#module-postcactus.simdir" title="Permalink to this headline">¶</a></h1>
+<p>This module provides easy access to CACTUS data files.</p>
+<p>A simulation directory is represented by an instance of the  
+<a class="reference internal" href="#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimDir</span></code></a> class, which provides access to all supported
+data types.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.simdir.SimDir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.simdir.</span></span><span class="sig-name descname"><span class="pre">SimDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.simdir.SimDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a CACTUS simulation directory.</p>
+<p>Data is searched recursively in all subfolders. No particular folder
+structure (e.g. SimFactory style) is assumed. The following attributes 
+allow access to the supported data types:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Top level path of simulation directory.</p></li>
+<li><p><strong>dirs</strong> – All directories in which data is searched.</p></li>
+<li><p><strong>parfiles</strong> – The locations of all parameter files.</p></li>
+<li><p><strong>initial_params</strong> – Simulation parameters, see 
+<a class="reference internal" href="parfiles.html#postcactus.cactus_parfile.Parfile" title="postcactus.cactus_parfile.Parfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parfile</span></code></a>.</p></li>
+<li><p><strong>logfiles</strong> – The locations of all log files (.out).</p></li>
+<li><p><strong>errfiles</strong> – The location of all error log files (.err).</p></li>
+<li><p><strong>ts</strong> – Scalar data of various type, see 
+<a class="reference internal" href="cactus_scalars.html#postcactus.cactus_scalars.ScalarsDir" title="postcactus.cactus_scalars.ScalarsDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarsDir</span></code></a></p></li>
+<li><p><strong>grid</strong> – Access to grid function data, see
+<a class="reference internal" href="cactus_grid.html#postcactus.cactus_grid_omni.GridOmniDir" title="postcactus.cactus_grid_omni.GridOmniDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridOmniDir</span></code></a>.</p></li>
+<li><p><strong>gwmoncrief</strong> – GW signal obtained using Moncrief formalism,
+see <a class="reference internal" href="cactus_gwsignal.html#postcactus.cactus_gwsignal.CactusGWMoncrief" title="postcactus.cactus_gwsignal.CactusGWMoncrief"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusGWMoncrief</span></code></a>.</p></li>
+<li><p><strong>gwpsi4mp</strong> – GW signal from the Weyl scalar multipole
+decomposition, see <a class="reference internal" href="cactus_gwsignal.html#postcactus.cactus_gwsignal.CactusGWPsi4MP" title="postcactus.cactus_gwsignal.CactusGWPsi4MP"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusGWPsi4MP</span></code></a>.</p></li>
+<li><p><strong>ahoriz</strong> – Apparent horizon information, see
+<a class="reference internal" href="cactus_ah.html#postcactus.cactus_ah.CactusAH" title="postcactus.cactus_ah.CactusAH"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusAH</span></code></a>.</p></li>
+<li><p><strong>multipoles</strong> – Multipole components, see 
+<a class="reference internal" href="multipoles.html#postcactus.cactus_multipoles.CactusMultipoleDir" title="postcactus.cactus_multipoles.CactusMultipoleDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusMultipoleDir</span></code></a>.</p></li>
+<li><p><strong>metadata</strong> – This allows augmenting the simulation folder
+with metadata, see <a class="reference internal" href="metadatafolder.html#postcactus.metadatafolder.MetaDataFolder" title="postcactus.metadatafolder.MetaDataFolder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaDataFolder</span></code></a>.</p></li>
+<li><p><strong>timertree</strong> – Access TimerTree data, see
+<code class="xref py py-class docutils literal notranslate"><span class="pre">TimerTree</span></code>.</p></li>
+<li><p><strong>bns_track</strong> – NS trajectories, see 
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CactusBNSTrack</span></code>.</p></li>
+<li><p><strong>hist1d</strong> – 1D histograms, see <code class="xref py py-class docutils literal notranslate"><span class="pre">Hist1DDataDir</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em>) – Path to simulation directory.</p></li>
+<li><p><strong>max_depth</strong> (<em>int</em>) – Maximum recursion depth for subfolders.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Folders named ‘SIMFACTORY’, ‘report’, ‘movies’, ‘tmp’, and ‘temp’
+and links to folders are excluded from the search for data files. 
+Parfiles (*.par) will be searched in all data directories and the 
+top-level SIMFACTORY/par folder, if it exists. The parfile in the 
+latter folder, if available, or else the oldest parfile in any of 
+the data directories, will be used to extract the simulation 
+parameters. Logfiles (*.out) and errorfiles (*.err) will be 
+searched for in all data directories.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples/basic/basic_example.html"
+                        title="previous chapter">Basic Example</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grid_data.html"
+                        title="next chapter">Representation of Grid Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/simdir.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grid_data.html" title="Representation of Grid Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples/basic/basic_example.html" title="Basic Example"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Work with Simulation Directories</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

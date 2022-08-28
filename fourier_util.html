@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Compute Fourier Spectra &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Maintain Simulation Metadata" href="metadatafolder.html" />
+    <link rel="prev" title="Get Multipole Component Data" href="multipoles.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="metadatafolder.html" title="Maintain Simulation Metadata"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multipoles.html" title="Get Multipole Component Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Compute Fourier Spectra</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.fourier_util">
+<span id="compute-fourier-spectra"></span><h1>Compute Fourier Spectra<a class="headerlink" href="#module-postcactus.fourier_util" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.fourier_util" title="postcactus.fourier_util"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fourier_util</span></code></a> module provides classes representing 
+the Fourier spectrum of timeseries, and methods to search for peaks.</p>
+<p>Basic usage, get parameters and time series:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&gt;&gt;from postcactus.fourier_util import *</span>
+<span class="go">&gt;&gt;&gt;t = linspace(0,30,400)</span>
+<span class="go">&gt;&gt;&gt;y = sin(2*pi*1.3*t) + t - 3</span>
+<span class="go">&gt;&gt;&gt;sp = spec(t,y)</span>
+<span class="go">&gt;&gt;&gt;sp2 = spec(t,y,remove_mean=True, window=hanning)</span>
+<span class="go">&gt;&gt;&gt;plot(sp.f, sp.amp, &#39;k-&#39;)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D at 0x4733f10&gt;]</span>
+<span class="go">&gt;&gt;&gt;plot(sp2.f, sp2.amp, &#39;g-&#39;)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D at 0x473ec50&gt;]</span>
+<span class="go">&gt;&gt;&gt;axvline(1.3)</span>
+<span class="go">&lt;matplotlib.lines.Line2D at 0x4741ed0&gt;</span>
+<span class="go">&gt;&gt;&gt;pks = peaks(sp2.f, sp2.amp, 0.01)</span>
+<span class="go">&gt;&gt;&gt;print pks</span>
+<span class="go">#               f / Hz             f_fit / Hz       amp. </span>
+<span class="go">               1.29675        1.2992136857669     0.0709 </span>
+<span class="go"># Resolution = 0.016625 Hz</span>
+<span class="go">&gt;&gt;&gt;axvline(pks.all[0].ff)</span>
+<span class="go">&lt;matplotlib.lines.Line2D at 0x48e4c90&gt;</span>
+<span class="go">&gt;&gt;&gt;axvline(pks.all[0].f)</span>
+<span class="go">&lt;matplotlib.lines.Line2D at 0x48f1e10&gt;</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.fourier_util.spec">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.fourier_util.</span></span><span class="sig-name descname"><span class="pre">spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.fourier_util.spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing a Fourier spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> – Frequency</p></li>
+<li><p><strong>amp</strong> – Power spectral density</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>t</strong> (<em>1d numpy array</em>) – sample times (can be irregular).</p></li>
+<li><p><strong>y</strong> (<em>1d numpy array</em><em> (</em><em>real</em><em> or </em><em>complex</em><em>)</em>) – data samples.</p></li>
+<li><p><strong>norm</strong> (<em>bool</em>) – Whether to normalize the PSD to the largest peak.</p></li>
+<li><p><strong>window</strong> (<em>Any function accepting length and returning numpy
+array of this length.</em>) – Window function applied before Fourier transform.</p></li>
+<li><p><strong>remove_mean</strong> (<em>bool</em>) – Whether to subtract mean value before Fourier 
+transform.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.fourier_util.peak">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.fourier_util.</span></span><span class="sig-name descname"><span class="pre">peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.fourier_util.peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents one peak of a Fourier spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> – Frequency of the frequency bin of the maximum.</p></li>
+<li><p><strong>ff</strong> – Frequency of the peak obtained by fitting a parabola
+through the maximum and its two neighbours.</p></li>
+<li><p><strong>a</strong> – Amplitude of the peak.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.fourier_util.peaks">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.fourier_util.</span></span><span class="sig-name descname"><span class="pre">peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.fourier_util.peaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the peaks of a Fourier spectrum.
+Each peak is characterized by the frequency of the corresponding
+frequency bin of the power spectrum, as well as the frequency
+of the maximum of a quadratic fit to the maximum and its left and
+right neighbour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>all</strong> – All peaks, sorted by amplitude (list of 
+<a class="reference internal" href="#postcactus.fourier_util.peak" title="postcactus.fourier_util.peak"><code class="xref py py-class docutils literal notranslate"><span class="pre">peak</span></code></a> instances)</p>
+</dd>
+</dl>
+<p>Searches for the peaks in a given Fourier spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>1d numpy array</em>) – frequencies of the PSD.</p></li>
+<li><p><strong>a0</strong> (<em>1d numpy array</em>) – PSD.</p></li>
+<li><p><strong>cut</strong> (<em>float</em>) – Ignore peaks smaller than this fraction of the largest 
+one.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.fourier_util.peaks.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.fourier_util.peaks.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save peaks to human readable file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> (<em>string</em>) – The filename.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="multipoles.html"
+                        title="previous chapter">Get Multipole Component Data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="metadatafolder.html"
+                        title="next chapter">Maintain Simulation Metadata</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/fourier_util.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="metadatafolder.html" title="Maintain Simulation Metadata"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multipoles.html" title="Get Multipole Component Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Compute Fourier Spectra</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

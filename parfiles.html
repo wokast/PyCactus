@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Simulation Parameters &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Apparent Horizon Information" href="cactus_ah.html" />
+    <link rel="prev" title="Get Scalar Data" href="cactus_scalars.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_ah.html" title="Get Apparent Horizon Information"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cactus_scalars.html" title="Get Scalar Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Simulation Parameters</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.cactus_parfile">
+<span id="get-simulation-parameters"></span><h1>Get Simulation Parameters<a class="headerlink" href="#module-postcactus.cactus_parfile" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.cactus_parfile" title="postcactus.cactus_parfile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cactus_parfile</span></code></a> module provides a class 
+<a class="reference internal" href="#postcactus.cactus_parfile.Parfile" title="postcactus.cactus_parfile.Parfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parfile</span></code></a> representing Cactus simulation parameters, and a 
+function <a class="reference internal" href="#postcactus.cactus_parfile.load_parfile" title="postcactus.cactus_parfile.load_parfile"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_parfile()</span></code></a> to parse Cactus parameter files.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&gt;&gt;p = load_parfile(&quot;doomed.par&quot;)</span>
+<span class="go">&gt;&gt;&gt;p.coordbase.dx</span>
+<span class="go">&#39;6.4&#39;</span>
+<span class="go">&gt;&gt;&gt;cb = p.coordbase</span>
+<span class="go">&gt;&gt;&gt;float(cb.xmax) / float(cb.dx)</span>
+<span class="go">80.0</span>
+<span class="go">&gt;&gt;&gt;p[&#39;coordbase&#39;][&#39;dx&#39;]  # alternative access</span>
+<span class="go">&#39;6.4&#39;</span>
+<span class="go">&gt;&gt;&gt;&#39;CoordBase&#39; in p   </span>
+<span class="go">True</span>
+<span class="go">&gt;&gt;&gt;&#39;hobbit&#39; in cb</span>
+<span class="go">False</span>
+<span class="go">&gt;&gt;&gt;print p.coordbase</span>
+<span class="go">coordbase::domainsize                    = &quot;minmax&quot;</span>
+<span class="go">coordbase::dx                            = 6.4</span>
+<span class="go">coordbase::xmax                          = 512</span>
+<span class="go">&gt;&gt;&gt;print p.active_thorns()</span>
+<span class="go">set([&#39;symbase&#39;, &#39;coordbase&#39;])</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_parfile.Parfile">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_parfile.</span></span><span class="sig-name descname"><span class="pre">Parfile</span></span><a class="headerlink" href="#postcactus.cactus_parfile.Parfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents Cactus simulation parameters. It provides Thorn
+objects which represent the parameters of a single Cactus thorn. The thorns
+can be obtained in a dictionary-like way, or more pythonic as attributes.
+Besides the thorn parameters, it also contains a list of active thorns.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_parfile.Parfile.active_thorns">
+<span class="sig-name descname"><span class="pre">active_thorns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_parfile.Parfile.active_thorns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of active thorns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_parfile.Parfile.has_key">
+<span class="sig-name descname"><span class="pre">has_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_parfile.Parfile.has_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if a given thorn is available.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_parfile.Thorn">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_parfile.</span></span><span class="sig-name descname"><span class="pre">Thorn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_parfile.Thorn" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the parameters of a given Cactus thorn. The 
+parameters can be accessed by name in a dictionary like way, or as object 
+attributes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_parfile.Thorn.has_key">
+<span class="sig-name descname"><span class="pre">has_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_parfile.Thorn.has_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if given parameter is available</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.cactus_parfile.load_parfile">
+<span class="sig-prename descclassname"><span class="pre">postcactus.cactus_parfile.</span></span><span class="sig-name descname"><span class="pre">load_parfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_varlists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guess_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_parfile.load_parfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load and parse a Cactus parameter file given by path. If guess_types 
+True, the function will try to guess the type of the parameters and bring 
+them into canonic form, e.g. 0.0001 will become a float, no or false will 
+become a bool. This can go wrong, e.g. a string parameter set to “yes” would 
+be read as bool. This function knows about some parameters representing 
+lists of Cactus grid functions, and tries to bring them in canonic form, 
+unless parse_varlists is False. If unparsable content is encountered, a 
+warning is printed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This does not know anything about default values.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Cactus might parse parameter files slightly different 
+in some corner cases.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em>) – Location of the parfile.</p></li>
+<li><p><strong>parse_varlists</strong> (<em>bool</em>) – Whether to bring known variable list parameters
+into canonical form.</p></li>
+<li><p><strong>guess_Types</strong> (<em>bool</em>) – Whether to guess parameter types and convert into
+canonical form.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The extracted parameters</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.cactus_parfile.Parfile" title="postcactus.cactus_parfile.Parfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parfile</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cactus_scalars.html"
+                        title="previous chapter">Get Scalar Data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cactus_ah.html"
+                        title="next chapter">Get Apparent Horizon Information</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parfiles.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_ah.html" title="Get Apparent Horizon Information"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cactus_scalars.html" title="Get Scalar Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Simulation Parameters</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

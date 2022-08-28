@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Apparent Horizon Information &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Gravitational Wave Data" href="cactus_gwsignal.html" />
+    <link rel="prev" title="Get Simulation Parameters" href="parfiles.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_gwsignal.html" title="Get Gravitational Wave Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="parfiles.html" title="Get Simulation Parameters"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Apparent Horizon Information</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.cactus_ah">
+<span id="get-apparent-horizon-information"></span><h1>Get Apparent Horizon Information<a class="headerlink" href="#module-postcactus.cactus_ah" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.cactus_ah" title="postcactus.cactus_ah"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cactus_ah</span></code></a> module provides classes to access the 
+information about apparent horizons from various thorns. The main class 
+is <a class="reference internal" href="#postcactus.cactus_ah.CactusAH" title="postcactus.cactus_ah.CactusAH"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusAH</span></code></a> which collects all available data from a 
+simulation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.AHorizon">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_ah.</span></span><span class="sig-name descname"><span class="pre">AHorizon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ih</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.AHorizon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing all the information available on a given 
+apparent horizon, from the thorns AHFinderDirect, QuasiLocalMeasures, 
+and IsolatedHorizon. Data members are</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idx</strong> – AHFinderDirect AH index.</p></li>
+<li><p><strong>tformation</strong> – AH formation time.</p></li>
+<li><p><strong>ah</strong> – Information from AHFinderDirect 
+(<a class="reference internal" href="#postcactus.cactus_ah.BHDiags" title="postcactus.cactus_ah.BHDiags"><code class="xref py py-class docutils literal notranslate"><span class="pre">BHDiags</span></code></a>)</p></li>
+<li><p><strong>shape</strong> – AH shape from AHFinderDirect 
+(<a class="reference internal" href="#postcactus.cactus_ah.BHShape" title="postcactus.cactus_ah.BHShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">BHShape</span></code></a>)</p></li>
+<li><p><strong>ih</strong> – Measures obtained using isolated horizon framework 
+(<a class="reference internal" href="#postcactus.cactus_ah.IsolatedHorizon" title="postcactus.cactus_ah.IsolatedHorizon"><code class="xref py py-class docutils literal notranslate"><span class="pre">IsolatedHorizon</span></code></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Constructor. No need to use this class directly, create a 
+<a class="reference internal" href="#postcactus.cactus_ah.CactusAH" title="postcactus.cactus_ah.CactusAH"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusAH</span></code></a> instance instead to collect all BH
+info.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.BHDiags">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_ah.</span></span><span class="sig-name descname"><span class="pre">BHDiags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.BHDiags" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class collects the information BH_Diagnostic files saved by 
+the thorn AHFinderDirect for a given horizon. Data from different
+restarts will be merged transparently. The following variables are 
+provided as <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>it</strong> – Iteration number</p></li>
+<li><p><strong>pos_x</strong> – x-position of spherical surface center.</p></li>
+<li><p><strong>pos_y</strong> – y-position of spherical surface center.</p></li>
+<li><p><strong>pos_z</strong> – z-position of spherical surface center.</p></li>
+<li><p><strong>rmean</strong> – Mean coordinate radius.</p></li>
+<li><p><strong>m_irr</strong> – Irreducible BH mass.</p></li>
+<li><p><strong>r_circ_xy</strong> – Circumferential radius in xy plane.</p></li>
+<li><p><strong>r_circ_xz</strong> – Circumferential radius in xz plane.</p></li>
+<li><p><strong>r_circ_yz</strong> – Circumferential radius in yz plane.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The final values are named the same with a “_final” suffix.
+Other members are:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idx</strong> – AHFinderDirect index of BH.</p></li>
+<li><p><strong>tmin</strong> – Time of first detection.</p></li>
+<li><p><strong>tmax</strong> – Final time.</p></li>
+<li><p><strong>itmin</strong> – Iteration at first detection.</p></li>
+<li><p><strong>itmax</strong> – Final iteration.</p></li>
+<li><p><strong>max_rmean</strong> – Maximum (over time) mean radius.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Constructor. No need to use this class directly, create a 
+<a class="reference internal" href="#postcactus.cactus_ah.CactusAH" title="postcactus.cactus_ah.CactusAH"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusAH</span></code></a> instance instead to collect all BH
+info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idx</strong> (<em>int</em>) – The horizon index.</p></li>
+<li><p><strong>files</strong> – List of all BHDiagnostic files.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.BHShape">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_ah.</span></span><span class="sig-name descname"><span class="pre">BHShape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allfiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">it_vs_t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.BHShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the shape evolution of a given apparent 
+horizon found by the thorn AHFinderDirect. The main use is a method to 
+get a cut of the AH in a coordinate plane at specified time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idx</strong> – AHFinderDirect AH index.</p></li>
+<li><p><strong>available</strong> – Whether the shape is available for this AH.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If AH is available, the following members are defined:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_min</strong> – Time where shape becomes available.</p></li>
+<li><p><strong>t_max</strong> – Final time shape is available.</p></li>
+<li><p><strong>iter_min</strong> – Iteration at which shape becomes available.</p></li>
+<li><p><strong>iter_max</strong> – Final Iteration where shape is available.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Constructor. No need to use this class directly, create a 
+<a class="reference internal" href="#postcactus.cactus_ah.CactusAH" title="postcactus.cactus_ah.CactusAH"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusAH</span></code></a> instance instead to collect all BH
+info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idx</strong> – The AH horizon index.</p></li>
+<li><p><strong>allfiles</strong> (<em>list of str</em>) – List of files that might contain AH data.</p></li>
+<li><p><strong>it_vs_t</strong> (<a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>) – The iteration number as function of time.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.BHShape.get_ah_cut">
+<span class="sig-name descname"><span class="pre">get_ah_cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.BHShape.get_ah_cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a cut of the AH in a given coordinate plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<em>float</em>) – Time for which to get AH cut.</p></li>
+<li><p><strong>dim</strong> (<em>int</em>) – Direction of normal vector.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em> or </em><em>None.</em>) – Tolerance for time match. Default: infinite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Coordinates of AH outline.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of two 1D numpy arrays.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.BHShape.get_ah_patches">
+<span class="sig-name descname"><span class="pre">get_ah_patches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.BHShape.get_ah_patches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the AH patches at a given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<em>float</em>) – Time for which to get AH cut.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em> or </em><em>None.</em>) – Tolerance for time match. Default: infinite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The available horizon patches.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dictionary patch name -&gt; three 2D arrays x,y,z</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.BHShape.has_cut_at_time">
+<span class="sig-name descname"><span class="pre">has_cut_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.BHShape.has_cut_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether shape is available at a given time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>) – Time.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em> or </em><em>None.</em>) – Tolerance for time match. Default: infinite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If shape info is available.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.BHShape.has_cut_for_it">
+<span class="sig-name descname"><span class="pre">has_cut_for_it</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.BHShape.has_cut_for_it" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether shape is available at iteration it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>it</strong> (<em>int</em>) – Iteration.</p></li>
+<li><p><strong>tol</strong> (<em>int</em><em> or </em><em>None.</em>) – Tolerance for iteration number match. Default: infinite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If shape info is available.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.CactusAH">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_ah.</span></span><span class="sig-name descname"><span class="pre">CactusAH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.CactusAH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to collect information on apparent horizons
+available from thorns AHFinderDirect, IsolatedHorizon, 
+and QuasiLocalMeasures. The following members are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>horizons</strong> – All horizons (list of <a class="reference internal" href="#postcactus.cactus_ah.AHorizon" title="postcactus.cactus_ah.AHorizon"><code class="xref py py-class docutils literal notranslate"><span class="pre">AHorizon</span></code></a>).</p></li>
+<li><p><strong>found_any</strong> – True if at least one horizon was found.</p></li>
+<li><p><strong>largest</strong> – Horizon with largest mean radius or None.</p></li>
+<li><p><strong>tformation</strong> – Formation time or None.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Iterating over CactusAH objects means iterating over
+the horizons.</p>
+<p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sd</strong> (<a class="reference internal" href="simdir.html#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><em>SimDir</em></a>) – SimDir object providing access to data directory.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to relate IsolatedHorizon and 
+QuasiLocalMeasures surfaces to AH indices, the parameter file is
+required. Unfortunately, even if the data is available, it cannot 
+be accessed if the parameters are not provided.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_ah.IsolatedHorizon">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_ah.</span></span><span class="sig-name descname"><span class="pre">IsolatedHorizon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surf_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_ah.IsolatedHorizon" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents properties of an apparent horizon 
+computed from the isolated horizon formalism.</p>
+<p>The following variables are provided as <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> – Mass of the BH.</p></li>
+<li><p><strong>M_irr</strong> – Irreducible mass of the BH.</p></li>
+<li><p><strong>J</strong> – Angular momentum of the BH.</p></li>
+<li><p><strong>J_x</strong> – x-component of angular momentum.</p></li>
+<li><p><strong>J_y</strong> – y-component of angular momentum.</p></li>
+<li><p><strong>J_z</strong> – z-component of angular momentum.</p></li>
+<li><p><strong>area</strong> – Horizon area.</p></li>
+<li><p><strong>dimless_a</strong> – Dimensionless spin parameter of the BH.</p></li>
+<li><p><strong>circ_radius_xy</strong> – Circumferential radius of AH in xy plane.</p></li>
+<li><p><strong>circ_radius_xz</strong> – Circumferential radius of AH in xz plane.</p></li>
+<li><p><strong>circ_radius_yz</strong> – Circumferential radius of AH in yz plane.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Those are taken from the QuasilocalMeasures thorn output, if available,
+else from IsolatedHorizon. Results from both thorns are kept under the
+same name with prefixes “ih_” and “qlm_”. For each timeseries
+a boolean variable with prefix “has_” reports if the information is
+available or not. Variables with suffix “_final” provide the values
+at the end of the simulation. Printing this class (or conversion to 
+string) results in human readable summary.</p>
+<p>Constructor. No need to use this class directly, create a 
+<a class="reference internal" href="#postcactus.cactus_ah.CactusAH" title="postcactus.cactus_ah.CactusAH"><code class="xref py py-class docutils literal notranslate"><span class="pre">CactusAH</span></code></a> instance instead to collect all BH
+info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surf_idx</strong> (<em>int</em>) – The SphericalSurface index of the AH.</p></li>
+<li><p><strong>sts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">CactusDirTS</span></code>) – Where to get the TimeSeries from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="parfiles.html"
+                        title="previous chapter">Get Simulation Parameters</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cactus_gwsignal.html"
+                        title="next chapter">Get Gravitational Wave Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cactus_ah.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_gwsignal.html" title="Get Gravitational Wave Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="parfiles.html" title="Get Simulation Parameters"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Apparent Horizon Information</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

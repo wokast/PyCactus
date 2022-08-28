@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Representation of Time Series &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Grid Data" href="cactus_grid.html" />
+    <link rel="prev" title="Representation of Grid Data" href="grid_data.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_grid.html" title="Get Grid Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grid_data.html" title="Representation of Grid Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Representation of Time Series</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.timeseries">
+<span id="representation-of-time-series"></span><h1>Representation of Time Series<a class="headerlink" href="#module-postcactus.timeseries" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.timeseries" title="postcactus.timeseries"><code class="xref py py-mod docutils literal notranslate"><span class="pre">timeseries</span></code></a> module provides a representation of time 
+series with methods to compute derivatives and definite integrals, 
+resample time series, in particular to regular time intervals, smooth 
+them, and combine overlapping time series into one.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents real or complex valued time series.</p>
+<p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>1D numpy array</em><em> or </em><em>list.</em>) – Sampling times, need to be strictly increasing.</p></li>
+<li><p><strong>y</strong> (<em>1D numpy array</em><em> or </em><em>list.</em>) – Data samples, can be real or complex valued.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.clip">
+<span class="sig-name descname"><span class="pre">clip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.clip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Throws away data outside the time intarval [tmin, tmax].
+if tmin or tmax are not specified or None, it does not remove
+anything from this side.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tmin</strong> (<em>float</em><em> or </em><em>None</em>) – Left boundary cut interval or None.</p></li>
+<li><p><strong>tmax</strong> (<em>float</em><em> or </em><em>None</em>) – Right boundary cut interval or None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.cont_phase">
+<span class="sig-name descname"><span class="pre">cont_phase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.cont_phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the complex phase of a complex-valued signal such that
+no phase wrap-arounds occur, i.e. if the input is continous, so is
+the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Continuous complex phase.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.deriv">
+<span class="sig-name descname"><span class="pre">deriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.deriv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute derivative of order&lt;=5 using splines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – Order of differentiation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Differential.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.finite_values">
+<span class="sig-name descname"><span class="pre">finite_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.finite_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter out infinite values.
+:returns: Time series with finit values only.
+:rtype:   <a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.gaussian_filter">
+<span class="sig-name descname"><span class="pre">gaussian_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsmooth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.gaussian_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smooth timeseries with gaussian filter. If deriv&gt;0,
+smoothed derivatige is computed by convolution with 
+gaussian kernel derivative.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.integrate">
+<span class="sig-name descname"><span class="pre">integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.integrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the definite integral over the interval [a,b] using
+spline representations. If lower and/or upper bound is not specified, 
+use boundary of the timeseries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em><em> or </em><em>None</em>) – Lower integration bound or None.</p></li>
+<li><p><strong>b</strong> (<em>float</em><em> or </em><em>None</em>) – Upper integration bound or None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.is_complex">
+<span class="sig-name descname"><span class="pre">is_complex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.is_complex" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Wether the data is complex-valued.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.length">
+<span class="sig-name descname"><span class="pre">length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.length" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The length of the covered time interval.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.new_time_unit">
+<span class="sig-name descname"><span class="pre">new_time_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.new_time_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescales the time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>utime</strong> (<em>float</em>) – Factor by which to divide times.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.phase_avg_freq">
+<span class="sig-name descname"><span class="pre">phase_avg_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tavg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.phase_avg_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the average frequency corresponding to the average 
+phase velocity.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.phase_avg_vel">
+<span class="sig-name descname"><span class="pre">phase_avg_vel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tavg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.phase_avg_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the average phase velocity over periods tavg.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.phase_vel">
+<span class="sig-name descname"><span class="pre">phase_vel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.phase_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the phase velocity, i.e. the time derivative 
+of the complex phase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.regular_sample">
+<span class="sig-name descname"><span class="pre">regular_sample</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.regular_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples the timeseries to regularly spaced times, with the
+same number of points.
+:returns: Regularly resampled time series.
+:rtype:   <a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.remove_mean">
+<span class="sig-name descname"><span class="pre">remove_mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.remove_mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the mean value from the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.resampled">
+<span class="sig-name descname"><span class="pre">resampled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.resampled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples the timeseries to new times tn.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tn</strong> (<em>1D numpy array</em><em> or </em><em>list of float.</em>) – New sample times.</p></li>
+<li><p><strong>ext</strong> (<em>0 for extrapolation</em><em>, </em><em>1 for returning zero</em><em>, </em><em>2 for ValueError.</em>) – How to handle points outside the time interval.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resampled time series.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves into simple ascii format with 2 collumns (t,y) for real valued
+data and 3 collumns (t, Re(y), Im(y)) for complex valued data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> (<em>str</em>) – File name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.smoothed">
+<span class="sig-name descname"><span class="pre">smoothed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tsm</span></em>, <em class="sig-param"><span class="pre">fwin=&lt;function</span> <span class="pre">ones&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.smoothed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smooth the data by convoluting with a window function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fwin</strong> – The window function.</p></li>
+<li><p><strong>tsm</strong> (<em>float</em>) – Smoothing length.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Smoothed timeseries.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.tmax">
+<span class="sig-name descname"><span class="pre">tmax</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.tmax" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The final time.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.timeseries.TimeSeries.tmin">
+<span class="sig-name descname"><span class="pre">tmin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.TimeSeries.tmin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The starting time.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.timeseries.combine_ts">
+<span class="sig-prename descclassname"><span class="pre">postcactus.timeseries.</span></span><span class="sig-name descname"><span class="pre">combine_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer_late</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.combine_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine several overlapping time series into one. In intervals covered
+by two or more time series, which data is used depends on the parameter
+prefer_late.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>series</strong> (list of <a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>) – The timeseries to combine.</p></li>
+<li><p><strong>prefer_late</strong> – Prefer data that starts later for overlapping segments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The combined time series.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.timeseries.sample_common">
+<span class="sig-prename descclassname"><span class="pre">postcactus.timeseries.</span></span><span class="sig-name descname"><span class="pre">sample_common</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.timeseries.sample_common" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples a list of timeseries to the largest time interval covered
+by all timeseries, using regularly spaced time. The number of 
+sample points is the maximum over all time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ts</strong> (list of <a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>) – The timeseries to resample.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The resampled time series.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of <a class="reference internal" href="#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="grid_data.html"
+                        title="previous chapter">Representation of Grid Data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cactus_grid.html"
+                        title="next chapter">Get Grid Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/timeseries.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_grid.html" title="Get Grid Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grid_data.html" title="Representation of Grid Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Representation of Time Series</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

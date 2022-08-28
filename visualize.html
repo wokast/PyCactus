@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Visualize Cactus Data &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Maintain Simulation Metadata" href="metadatafolder.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="metadatafolder.html" title="Maintain Simulation Metadata"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Visualize Cactus Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.visualize">
+<span id="visualize-cactus-data"></span><h1>Visualize Cactus Data<a class="headerlink" href="#module-postcactus.visualize" title="Permalink to this headline">¶</a></h1>
+<p>This module provides functions to plot various Cactus data types,
+such as 2D <a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a>, <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.adj_limits">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">adj_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aspect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'equal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.adj_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set limits of axes to coordinate range of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> – Data from which to take coordinate range.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+<li><p><strong>aspect</strong> (<em>string</em><em> or </em><em>float</em>) – Aspect ratio of axes.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to adjust. Defaults to current axes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.color_bar">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">color_bar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ticks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.color_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a colorbar with optional label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Object to which the colorbar refers, e.g. the result of imshow.</p></li>
+<li><p><strong>cax</strong> – Existing colorbar axes, see matplotlibs colorbar().</p></li>
+<li><p><strong>ax</strong> – Axes where to insert colorbar axes, see matplotlibs colorbar().</p></li>
+<li><p><strong>label</strong> – Colorbar label.</p></li>
+<li><p><strong>ticks</strong> – location of the ticks.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs colorbar()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Colorbar instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.get_color_map">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">get_color_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">over</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">under</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.get_color_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get color map by name and set special colors for out-of-range values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – Name of the colormap.</p></li>
+<li><p><strong>over</strong> (<em>Matplotlib color</em><em> or </em><em>None.</em>) – Color for too large values.</p></li>
+<li><p><strong>under</strong> (<em>Matplotlib color</em><em> or </em><em>None.</em>) – Color for too large values.</p></li>
+<li><p><strong>masked</strong> (<em>Matplotlib color</em><em> or </em><em>None.</em>) – Color for masked values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib color map.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_color">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barticks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barshrink</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barextend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'neither'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a 2D color plot of RegData instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance) – 2D data to plot.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array or None) – Optional mask for the plot.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+<li><p><strong>vmin</strong> (<em>float</em><em> or </em><em>None</em>) – Minimum value for color scale. Defaults to data minimum.</p></li>
+<li><p><strong>vmax</strong> (<em>float</em><em> or </em><em>None</em>) – Maximum value for color scale. Defaults to data maximum.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+<li><p><strong>cmap</strong> (<em>Matplotlib colormap</em>) – Colormap to use for the plot.</p></li>
+<li><p><strong>interpolation</strong> (<em>string</em>) – Interpolation method, see matplotlib imshow(). 
+Defaults to nearest point.</p></li>
+<li><p><strong>bar</strong> (<em>bool</em>) – Whether to add a colorbar.</p></li>
+<li><p><strong>barlabel</strong> (<em>string</em><em> or </em><em>None</em>) – Label for the colorbar.</p></li>
+<li><p><strong>barticks</strong> (<em>list of floats</em><em> or </em><em>None</em>) – Locations of the colorbar ticks. Default: choose automatic.</p></li>
+<li><p><strong>barshrink</strong> (<em>float</em>) – Factor to shrink the colorbar.</p></li>
+<li><p><strong>barextend</strong> (<em>str</em>) – Whether to show the colors for out of range values at the 
+ends of the colorbar.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs imshow()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Image object.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>matplotlib.image.AxesImage object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_color_direct">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_color_direct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_color_direct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a 2D image with color components given by 3 RegData instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>red</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance) – 2D data for red component.</p></li>
+<li><p><strong>green</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance) – 2D data for green component.</p></li>
+<li><p><strong>blue</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance) – 2D data for blue component.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array or None) – Optional mask for the plot.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+<li><p><strong>vmax</strong> (<em>float</em><em> or </em><em>None</em>) – Maximum value for color scale. Defaults to data maximum.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+<li><p><strong>interpolation</strong> (<em>string</em>) – Interpolation method, see matplotlib imshow(). 
+Defaults to nearest point.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs imshow()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_contour">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelfmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%g'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neg_solid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a contour plot of RegData instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance) – 2D data to plot.</p></li>
+<li><p><strong>levels</strong> (<em>list of floats</em>) – Level contours to draw.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array) – Optional mask for the data.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+<li><p><strong>labels</strong> (<em>bool</em>) – If True, add lables to contours.</p></li>
+<li><p><strong>labelfmt</strong> (<em>str</em><em> or </em><em>None</em>) – Format string for contour labels.</p></li>
+<li><p><strong>neg_solid</strong> (<em>bool</em>) – Whether to draw negative contours solid or wtih default.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs contour()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Contour lines.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuadContourSet object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_contourf">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_contourf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_contourf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a filled contour plot of RegData instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance) – 2D data to plot.</p></li>
+<li><p><strong>levels</strong> (<em>list of floats</em>) – Level contours to draw.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array) – Optional mask for the data.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs contour()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Contour lines.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuadContourSet object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_grid_struct">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_grid_struct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_grid_struct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots grid structure of CompData or RegData objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or <a class="reference internal" href="grid_data.html#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>) – Data for which to plot the structure.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+<li><p><strong>edgecolor</strong> (<em>list of colors</em><em> or </em><em>None</em>) – Which colors to use for the edges of the components on 
+different levels. Will be repeated if shorter than number 
+of refinement levels.</p></li>
+<li><p><strong>facecolor</strong> (<em>list of colors</em><em> or </em><em>None</em>) – Like edgecolor, but for the interior of the components.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs patches.Rectangle()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_integral_curves">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_integral_curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seglength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_integral_curves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots integral curves of a vector field. Seed positions are choosen 
+randomly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> (<em>pair of callable objects.</em>) – Data to plot. Must be 2D.</p></li>
+<li><p><strong>num_seed</strong> (<em>int</em>) – Desired number of lines.</p></li>
+<li><p><strong>seglength</strong> (<em>float</em>) – Length of lines as fraction of figure size.</p></li>
+<li><p><strong>seedpos</strong> (<em>Nx2 numpy array</em><em> or </em><em>None</em>) – Positions where to begin the integral curves or None.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for x and y coordinates.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs plot()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_ts">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a TimeSeries object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a> instance) – Time series to plot.</p></li>
+<li><p><strong>units</strong> (<em>float</em><em> or </em><em>pair of floats.</em>) – Units for t and y coordinates.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs plot()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Result of matplotlibs plot() function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.plot_vectors">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">narrows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.plot_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a vector field. Resamples data to get desired number of arrows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> (vector of <a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a>) – Data to plot. Must be 2D.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array) – Optional mask for the data.</p></li>
+<li><p><strong>narrows</strong> (<em>int</em>) – Desired number of arrows.</p></li>
+<li><p><strong>vmax</strong> (<em>float</em><em> or </em><em>None</em>) – Maximum length assumed for scaling vectors.</p></li>
+<li><p><strong>unit</strong> (<em>float</em>) – Unit for both x and y coordinates.</p></li>
+<li><p><strong>x0</strong> (<em>length-2 float list/array</em><em> or </em><em>None</em>) – Sample region lower left coordinate. Default: use data 
+coordinate range.</p></li>
+<li><p><strong>x1</strong> (<em>length-2 float list/array</em><em> or </em><em>None</em>) – Sample region upper right coordinate. Default: use data 
+coordinate range.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes instance</em><em> or </em><em>None</em>) – Which axes to use for the plot. Defaults to current axes.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs quiver()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.sample_vectors">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">sample_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">narrows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.sample_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples a vector field for plotting purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> (2D vector of 2D <a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a>) – Vector to sample.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array) – Optional mask for the data.</p></li>
+<li><p><strong>narrows</strong> (<em>int</em>) – Desired number of arrows.</p></li>
+<li><p><strong>x0</strong> (<em>length-2 float list/array</em><em> or </em><em>None</em>) – Sample region lower left coordinate. Default: use data 
+coordinate range.</p></li>
+<li><p><strong>x1</strong> (<em>length-2 float list/array</em><em> or </em><em>None</em>) – Sample region upper right coordinate. Default: use data 
+coordinate range.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The results of this function are</p>
+<dl class="simple">
+<dt>cd<span class="classifier">length-2 tuple of lists or arrays </span></dt><dd><p>x- and y-coordinates of the samples.</p>
+</dd>
+<dt>d<span class="classifier">length-2 tuple of lists or arrays</span></dt><dd><p>x- and y-components of sampled vectors.</p>
+</dd>
+<dt>vmax<span class="classifier">float</span></dt><dd><p>Maximum length of all sampled vectors.</p>
+</dd>
+<dt>l<span class="classifier">float</span></dt><dd><p>Average distance between sampled vectors.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple (cd,d,vmax,l)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.savefig_multi">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">savefig_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formats</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.savefig_multi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save current figure in multiple formats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – Filename without extension.</p></li>
+<li><p><strong>formats</strong> (<em>string</em>) – Comma-separated list of file formats.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Unknown keyword arguments are passed to matplotlibs savefig()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.visualize.set_tick_color">
+<span class="sig-prename descclassname"><span class="pre">postcactus.visualize.</span></span><span class="sig-name descname"><span class="pre">set_tick_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.visualize.set_tick_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set tick color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> – Tick color.</p></li>
+<li><p><strong>axes</strong> – Axes for which to change the tick color or None for current 
+axes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="metadatafolder.html"
+                        title="previous chapter">Maintain Simulation Metadata</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/visualize.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="metadatafolder.html" title="Maintain Simulation Metadata"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Visualize Cactus Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

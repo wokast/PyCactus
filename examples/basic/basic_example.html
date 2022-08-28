@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Basic Example &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Work with Simulation Directories" href="../../simdir.html" />
+    <link rel="prev" title="PostCactus – Postprocessing Tools for Cactus Data" href="../../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../simdir.html" title="Work with Simulation Directories"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../index.html" title="PostCactus – Postprocessing Tools for Cactus Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basic Example</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basic-example">
+<h1>Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h1>
+<p>This IPython notebook shows some common use cases.</p>
+<p>First, import the most important modules:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">postcactus.simdir</span> <span class="kn">import</span> <span class="n">SimDir</span>
+<span class="kn">from</span> <span class="nn">postcactus</span> <span class="kn">import</span> <span class="n">visualize</span> <span class="k">as</span> <span class="n">viz</span>
+<span class="kn">from</span> <span class="nn">postcactus</span> <span class="kn">import</span> <span class="n">grid_data</span> <span class="k">as</span> <span class="n">gd</span>
+</pre></div>
+</div>
+<p>Next, get a representation of a simulation directory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sd</span> <span class="o">=</span> <span class="n">SimDir</span><span class="p">(</span><span class="s2">&quot;/home/wkastaun/mydata1/results/BNS/SHT/bns_sht_mb1.51_d45_s1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get some simulation parameters (try tab-completion!) from the parfile:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sd</span><span class="o">.</span><span class="n">initial_params</span><span class="o">.</span><span class="n">coordbase</span><span class="o">.</span><span class="n">xmax</span><span class="p">)</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sd</span><span class="o">.</span><span class="n">initial_params</span><span class="o">.</span><span class="n">coordbase</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
+<span class="n">xm</span><span class="o">/</span><span class="n">dx</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">100.0</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">sd</span><span class="o">.</span><span class="n">initial_params</span><span class="o">.</span><span class="n">reflectionsymmetry</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reflectionsymmetry</span><span class="p">::</span><span class="n">avoid_origin_x</span>       <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+<span class="n">reflectionsymmetry</span><span class="p">::</span><span class="n">avoid_origin_y</span>       <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+<span class="n">reflectionsymmetry</span><span class="p">::</span><span class="n">avoid_origin_z</span>       <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+<span class="n">reflectionsymmetry</span><span class="p">::</span><span class="n">reflection_x</span>         <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+<span class="n">reflectionsymmetry</span><span class="p">::</span><span class="n">reflection_y</span>         <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+<span class="n">reflectionsymmetry</span><span class="p">::</span><span class="n">reflection_z</span>         <span class="o">=</span> <span class="s2">&quot;yes&quot;</span>
+</pre></div>
+</div>
+<p>Get scalar data. Restarts will by merged transparently.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">min_alp</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">min</span><span class="p">[</span><span class="s1">&#39;alp&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Other norms are accessed the same way (try sd.ts.+TAB-KEY). For
+interactive work, there is a tab-completable list of available norms
+available as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">max_rho</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">rho</span>
+</pre></div>
+</div>
+<p>Plot resulting timeseries using matplotlib.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">min_alp</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">min_alp</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha$&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$t \,[M_\odot]$&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_12_0.png" src="../../_images/output_12_0.png" />
+<p>Graviational wave data from Psi4:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">sd</span><span class="o">.</span><span class="n">gwpsi4mp</span><span class="o">.</span><span class="n">available_dist</span>
+<span class="n">dist</span>  <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">gwpsi4mp</span><span class="o">.</span><span class="n">outermost</span>
+<span class="n">ffi_cut</span> <span class="o">=</span> <span class="mf">0.0155</span>
+<span class="n">hp</span><span class="p">,</span><span class="n">hc</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">gwpsi4mp</span><span class="o">.</span><span class="n">get_strain</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">ffi_cut</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">75.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">,</span> <span class="mf">620.0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mPC</span> <span class="o">=</span> <span class="mf">2.089553590485019e+19</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">t</span><span class="o">-</span><span class="n">dist</span><span class="p">,</span> <span class="n">hp</span><span class="o">.</span><span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mPC</span><span class="p">),</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$h^+$&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hc</span><span class="o">.</span><span class="n">t</span><span class="o">-</span><span class="n">dist</span><span class="p">,</span> <span class="n">hc</span><span class="o">.</span><span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mPC</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$h^\times$&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$t-r \,[M_\odot]$&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$h$&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_15_0.png" src="../../_images/output_15_0.png" />
+<p>Grid data can be obtained in two ways: resampled to uniform grid while
+loading, or as a collection of components.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">gd</span><span class="o">.</span><span class="n">RegGeom</span><span class="p">([</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span><span class="o">-</span><span class="mi">40</span><span class="p">],</span> <span class="n">x1</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="mi">40</span><span class="p">]);</span>
+<span class="n">it</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">xy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;rho&#39;</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="n">geom</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Grid data is returned as a wrapper around numpy arrays which also knows
+the geometry. As for scalar data, sd.grid.xy.fields provides
+tab-completion of available data. Unless adjust_spacing=False is
+specified, the returned grid spacing will be adjusted to the next finer
+level:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">rho</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span> <span class="n">rho</span><span class="o">.</span><span class="n">x0</span><span class="p">(),</span> <span class="n">rho</span><span class="o">.</span><span class="n">x1</span><span class="p">(),</span> <span class="n">rho</span><span class="o">.</span><span class="n">dx</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="p">[</span><span class="o">-</span><span class="mf">40.</span> <span class="o">-</span><span class="mf">40.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">40.</span>  <span class="mf">40.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">0.4</span>  <span class="mf">0.4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Binary arithmetic operations work as usual, unary operations are defined
+as methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rho_si</span> <span class="o">=</span> <span class="mf">6.176269145886163e+20</span> <span class="o">*</span> <span class="n">rho</span>
+<span class="n">lgrho_cgs</span> <span class="o">=</span> <span class="n">rho_si</span><span class="o">.</span><span class="n">log10</span><span class="p">()</span>
+<span class="nb">print</span> <span class="n">lgrho_cgs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">17.6317886801</span>
+</pre></div>
+</div>
+<p>To obtain an array with the refinement level from which each point is
+read, use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rlvl</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">xy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;rho&#39;</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="n">geom</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">level_fill</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>There are functions to plot 2D data as contour or color plot.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cm</span>     <span class="o">=</span> <span class="n">viz</span><span class="o">.</span><span class="n">get_color_map</span><span class="p">(</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">);</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_color</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">);</span>
+<span class="n">lvl</span>    <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">clrs</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">];</span>
+<span class="n">viz</span><span class="o">.</span><span class="n">plot_contour</span><span class="p">(</span><span class="n">rlvl</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">lvl</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">clrs</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_25_0.png" src="../../_images/output_25_0.png" />
+<p>Reading 1D, 2D, and 3D grid data works in the same way. Note if data of
+the requested dimension is not available, the code automatically makes a
+cut of higher-dimensional data, if available. For 1D data, there is a
+special method that merges a hirachy into an irregularly spaced dataset
+using the finest available points.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alp_x</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;alp&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">x</span><span class="p">,</span><span class="n">alpx</span> <span class="o">=</span> <span class="n">gd</span><span class="o">.</span><span class="n">merge_comp_data_1d</span><span class="p">(</span><span class="n">alp_x</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">alpx</span><span class="p">,</span> <span class="s1">&#39;bo-&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_27_0.png" src="../../_images/output_27_0.png" />
+<p>Apparent horizon data from AHFinderDirect, QuasiLocalMeasures, and
+(deprecated) IsolatedHorizons thorns is accessible as well:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sd2</span> <span class="o">=</span> <span class="n">SimDir</span><span class="p">(</span><span class="s2">&quot;/home/wkastaun/mydata2/results/aei/BNS/LS220/mb1.5_d50/spinf1_z4_nopi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">sd2</span><span class="o">.</span><span class="n">ahoriz</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Apparent</span> <span class="n">horizons</span> <span class="n">found</span><span class="p">:</span> <span class="mi">2</span>
+
+<span class="o">---</span> <span class="n">Horizon</span> <span class="mi">1</span> <span class="o">---</span>
+
+
+<span class="n">Apparent</span> <span class="n">horizon</span> <span class="mi">1</span>
+  <span class="n">times</span> <span class="p">(</span><span class="mf">7.814400e+03</span><span class="o">..</span><span class="mf">9.054720e+03</span><span class="p">)</span>
+  <span class="n">iterations</span> <span class="p">(</span><span class="mf">260480.</span><span class="o">.</span><span class="mi">301824</span><span class="p">)</span>
+  <span class="n">final</span> <span class="n">state</span>
+    <span class="n">irreducible</span> <span class="n">mass</span>  <span class="o">=</span> <span class="mf">2.439972e+00</span>
+    <span class="n">mean</span> <span class="n">radius</span>       <span class="o">=</span> <span class="mf">2.426214e+00</span>
+    <span class="n">circ</span><span class="o">.</span> <span class="n">radius</span> <span class="n">xy</span>   <span class="o">=</span> <span class="mf">3.327424e+01</span>
+    <span class="n">circ</span><span class="o">.</span> <span class="n">radius</span> <span class="n">xz</span>   <span class="o">=</span> <span class="mf">2.947053e+01</span>
+    <span class="n">circ</span><span class="o">.</span> <span class="n">radius</span> <span class="n">yz</span>   <span class="o">=</span> <span class="mf">2.947057e+01</span>
+
+<span class="n">Spherical</span> <span class="n">surface</span> <span class="mi">0</span>
+  <span class="n">final</span> <span class="n">state</span><span class="p">:</span>
+    <span class="n">M</span>             <span class="o">=</span> <span class="mf">2.647901e+00</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">M</span>             <span class="o">=</span> <span class="mf">2.647909e+00</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">/</span><span class="n">M</span><span class="o">^</span><span class="mi">2</span>         <span class="o">=</span> <span class="mf">7.158759e-01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">/</span><span class="n">M</span><span class="o">^</span><span class="mi">2</span>         <span class="o">=</span> <span class="mf">7.158779e-01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">^</span><span class="n">i</span>           <span class="o">=</span> <span class="p">(</span><span class="mf">6.374859e-14</span><span class="p">,</span> <span class="mf">3.138668e-14</span><span class="p">,</span> <span class="mf">5.022310e+00</span><span class="p">)</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">^</span><span class="n">i</span>           <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.633787e-08</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.801370e-09</span><span class="p">,</span> <span class="mf">5.022327e+00</span><span class="p">)</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">r_circ_xy</span>     <span class="o">=</span> <span class="mf">3.327421e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">r_circ_xy</span>     <span class="o">=</span> <span class="mf">3.327409e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">r_circ_xz</span>     <span class="o">=</span> <span class="mf">2.947098e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">r_circ_xz</span>     <span class="o">=</span> <span class="mf">2.947445e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">r_circ_yz</span>     <span class="o">=</span> <span class="mf">2.947539e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">r_circ_yz</span>     <span class="o">=</span> <span class="mf">2.947373e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+
+  <span class="n">Shape</span> <span class="n">available</span><span class="p">:</span> <span class="kc">True</span>
+
+<span class="o">---</span> <span class="n">Horizon</span> <span class="mi">2</span> <span class="o">---</span>
+
+
+<span class="n">Apparent</span> <span class="n">horizon</span> <span class="mi">2</span>
+  <span class="n">times</span> <span class="p">(</span><span class="mf">7.814400e+03</span><span class="o">..</span><span class="mf">9.054720e+03</span><span class="p">)</span>
+  <span class="n">iterations</span> <span class="p">(</span><span class="mf">260480.</span><span class="o">.</span><span class="mi">301824</span><span class="p">)</span>
+  <span class="n">final</span> <span class="n">state</span>
+    <span class="n">irreducible</span> <span class="n">mass</span>  <span class="o">=</span> <span class="mf">2.439972e+00</span>
+    <span class="n">mean</span> <span class="n">radius</span>       <span class="o">=</span> <span class="mf">2.426214e+00</span>
+    <span class="n">circ</span><span class="o">.</span> <span class="n">radius</span> <span class="n">xy</span>   <span class="o">=</span> <span class="mf">3.327424e+01</span>
+    <span class="n">circ</span><span class="o">.</span> <span class="n">radius</span> <span class="n">xz</span>   <span class="o">=</span> <span class="mf">2.947053e+01</span>
+    <span class="n">circ</span><span class="o">.</span> <span class="n">radius</span> <span class="n">yz</span>   <span class="o">=</span> <span class="mf">2.947057e+01</span>
+
+<span class="n">Spherical</span> <span class="n">surface</span> <span class="mi">1</span>
+  <span class="n">final</span> <span class="n">state</span><span class="p">:</span>
+    <span class="n">M</span>             <span class="o">=</span> <span class="mf">2.647901e+00</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">M</span>             <span class="o">=</span> <span class="mf">2.647909e+00</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">/</span><span class="n">M</span><span class="o">^</span><span class="mi">2</span>         <span class="o">=</span> <span class="mf">7.158759e-01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">/</span><span class="n">M</span><span class="o">^</span><span class="mi">2</span>         <span class="o">=</span> <span class="mf">7.158779e-01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">^</span><span class="n">i</span>           <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">6.404892e-14</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.137923e-14</span><span class="p">,</span> <span class="mf">5.022310e+00</span><span class="p">)</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">J</span><span class="o">^</span><span class="n">i</span>           <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.633792e-08</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.801398e-09</span><span class="p">,</span> <span class="mf">5.022327e+00</span><span class="p">)</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">r_circ_xy</span>     <span class="o">=</span> <span class="mf">3.327421e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">r_circ_xy</span>     <span class="o">=</span> <span class="mf">3.327409e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">r_circ_xz</span>     <span class="o">=</span> <span class="mf">2.947098e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">r_circ_xz</span>     <span class="o">=</span> <span class="mf">2.947445e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+    <span class="n">r_circ_yz</span>     <span class="o">=</span> <span class="mf">2.947539e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">QLM</span><span class="p">)</span>
+    <span class="n">r_circ_yz</span>     <span class="o">=</span> <span class="mf">2.947373e+01</span>  <span class="p">(</span><span class="kn">from</span> <span class="nn">IH</span><span class="p">)</span>
+
+  <span class="n">Shape</span> <span class="n">available</span><span class="p">:</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ah</span>   <span class="o">=</span> <span class="n">sd2</span><span class="o">.</span><span class="n">ahoriz</span><span class="o">.</span><span class="n">largest</span>
+<span class="n">m_ah</span> <span class="o">=</span> <span class="n">ah</span><span class="o">.</span><span class="n">ih</span><span class="o">.</span><span class="n">M</span>
+<span class="n">mirr_ah</span> <span class="o">=</span> <span class="n">ah</span><span class="o">.</span><span class="n">ih</span><span class="o">.</span><span class="n">M_irr</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_ah</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">m_ah</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;b-+&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mirr_ah</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">mirr_ah</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ah</span><span class="o">.</span><span class="n">tformation</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_31_0.png" src="../../_images/output_31_0.png" />
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../../index.html"
+                        title="previous chapter">PostCactus – Postprocessing Tools for Cactus Data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../simdir.html"
+                        title="next chapter">Work with Simulation Directories</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/basic/basic_example.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../simdir.html" title="Work with Simulation Directories"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../index.html" title="PostCactus – Postprocessing Tools for Cactus Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basic Example</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

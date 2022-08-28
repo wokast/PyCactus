@@ -1,0 +1,1841 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Representation of Grid Data &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Representation of Time Series" href="timeseries.html" />
+    <link rel="prev" title="Work with Simulation Directories" href="simdir.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="timeseries.html" title="Representation of Time Series"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="simdir.html" title="Work with Simulation Directories"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Representation of Grid Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.grid_data">
+<span id="representation-of-grid-data"></span><h1>Representation of Grid Data<a class="headerlink" href="#module-postcactus.grid_data" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.grid_data" title="postcactus.grid_data"><code class="xref py py-mod docutils literal notranslate"><span class="pre">grid_data</span></code></a> module provides representations of data on 
+uniform grids as well as for data on refined grid hirachies. Standard 
+arithmetic operations are supported for those data grids, further methods
+to interpolate and resample. The number of dimensions is arbitrary.
+Rudimentary vector and matrix oprations are also supported, using
+Vectors of data grids (instead of grids of vectors).</p>
+<dl class="simple">
+<dt>The important classes defined here are</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#postcactus.grid_data.RegGeom" title="postcactus.grid_data.RegGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegGeom</span></code></a>    represents the geometry of a uniform grid.</p></li>
+<li><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a>    represents data on a uniform grid and the 
+geometry.</p></li>
+<li><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>   represents data on a refined grid hirachy.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Vec</span></code>        represents a generic vector</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Mat</span></code>        represents a generic matrix</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.grid_data.</span></span><span class="sig-name descname"><span class="pre">RegGeom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nghost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes the geometry of a regular rectangular dataset, as well as 
+information needed if part of refined grid hierachy, namely component
+number and refinement level. Also stores the number of ghost zones, 
+which is however not used anywhere in this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<em>1d numpy arrary</em><em> or </em><em>list of int.</em>) – Number of points in each dimension.</p></li>
+<li><p><strong>origin</strong> (<em>1d numpy array</em><em> or </em><em>list of float.</em>) – Position of cell center with lowest coordinate.</p></li>
+<li><p><strong>delta</strong> (<em>1d numpy array</em><em> or </em><em>list of float.</em>) – If not None, specifies grid spacing, else grid
+spacing is computed from x0, x1, and shape.</p></li>
+<li><p><strong>x1</strong> (<em>1d numpy array</em><em> or </em><em>list of float.</em>) – If grid spacing is None, this specifies the 
+position of the cell center with largest 
+coordinates.</p></li>
+<li><p><strong>reflevel</strong> (<em>int</em>) – Refinement level if this belongs to a hierachy,
+else -1.</p></li>
+<li><p><strong>component</strong> (<em>int</em>) – Component number if this belongs to a hierachy,
+else -1.</p></li>
+<li><p><strong>nghost</strong> (<em>1d numpy arrary</em><em> or </em><em>list of int.</em>) – Number of ghost zones (default=0)</p></li>
+<li><p><strong>time</strong> (<em>float</em><em> or </em><em>None</em>) – Time if that makes sense, else None.</p></li>
+<li><p><strong>iteration</strong> (<em>float</em><em> or </em><em>None</em>) – Iteration if that makes sense, else None.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.component">
+<span class="sig-name descname"><span class="pre">component</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component number if this grid belongs to a hierachy, else -1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Component number.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if a coordinate is contained in the grid. The size of the 
+grid cells is taken into account, resulting in a cube larger by 
+dx/2 on each side compared to the one given by x0, x1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>1d numpy array</em><em> or </em><em>list of float.</em>) – Coordinate to test.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If pos is contained.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.coords1d">
+<span class="sig-name descname"><span class="pre">coords1d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.coords1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get coordinates of the grid points as 1D arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The coordinate array of each dimension.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of 1d numpy arrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.coords2d">
+<span class="sig-name descname"><span class="pre">coords2d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.coords2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get coordinates of the grid points as 2D arrays with the same 
+shape as the grid. Useful for arithmetic computations involving
+both data and coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The coordinate array of each dimension.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of numpy arrays with same shape as grid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.dim_ext">
+<span class="sig-name descname"><span class="pre">dim_ext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.dim_ext" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the extend in each dimension is larger than one 
+gridpoint.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array of bools</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.dv">
+<span class="sig-name descname"><span class="pre">dv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.dv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Volume of a grid cell.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.dx">
+<span class="sig-name descname"><span class="pre">dx</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.dx" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Grid spacing.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.flatten">
+<span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove dimensions which are only one gridpoint across</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.ind2pos">
+<span class="sig-name descname"><span class="pre">ind2pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.ind2pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute coordinate corresponding to a grid point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>i</strong> (<em>1d array</em><em> or </em><em>list of int.</em>) – Grid index.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The coordinate of grid point i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>1d numpy array of float.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.nfdims">
+<span class="sig-name descname"><span class="pre">nfdims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.nfdims" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The number of dimensions with size larger than one 
+gridpoint.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.nghost">
+<span class="sig-name descname"><span class="pre">nghost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.nghost" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of ghost zones in each dimension.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.num_dims">
+<span class="sig-name descname"><span class="pre">num_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.num_dims" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the number of dimensions.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.pos2ind">
+<span class="sig-name descname"><span class="pre">pos2ind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.pos2ind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the grid point nearest to a given position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>p</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Coordinate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>grid index of nearest point.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.reflevel">
+<span class="sig-name descname"><span class="pre">reflevel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.reflevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refinement level if this grid belongs to a hierachy, else -1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Level.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.scale_coords">
+<span class="sig-name descname"><span class="pre">scale_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.scale_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescale all coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scale</strong> (<em>float</em><em> or </em><em>1d numpy array</em>) – Factor to scale by.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.shape" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of grid points in each dimension.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.shift_coords">
+<span class="sig-name descname"><span class="pre">shift_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shift</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.shift_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift all coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shift</strong> (<em>float</em><em> or </em><em>1d numpy array</em>) – vector added to the origin.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.volume" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Volume of the whole grid.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.x0">
+<span class="sig-name descname"><span class="pre">x0</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position of the corner with minimum coordinates (cell center).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Corner coordinate.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegGeom.x1">
+<span class="sig-name descname"><span class="pre">x1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegGeom.x1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position of the corner with maximum coordinates (cell center).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Corner coordinate.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.grid_data.</span></span><span class="sig-name descname"><span class="pre">RegData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nghost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a rectangular data grid with coordinates, supporting 
+common arithmetic operations. The standard mathematical unary
+functions, e.g. sin(), are implemented as member functions.
+Supports interpolation and resampling. The objects can also be used 
+as a function, mapping coordinate to interpolated data. Supports 
+numercial differentiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>data</strong> – The actual data (numpy array).</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>origin</strong> (<em>1d numpy array</em><em> or </em><em>list of float.</em>) – Position of cell center with lowest coordinate.</p></li>
+<li><p><strong>delta</strong> (<em>1d numpy array</em><em> or </em><em>list of float.</em>) – If not None, specifies grid spacing, else grid
+spacing is computed from x0, x1, and shape.</p></li>
+<li><p><strong>data</strong> (<em>A numpy array.</em>) – The data.</p></li>
+<li><p><strong>outside_value</strong> (<em>float</em>) – Value to use when interpolating outside the 
+grid.</p></li>
+<li><p><strong>reflevel</strong> (<em>int</em>) – Refinement level if this belongs to a hierachy,
+else -1.</p></li>
+<li><p><strong>component</strong> (<em>int</em>) – Component number if this belongs to a hierachy,
+else -1.</p></li>
+<li><p><strong>nghost</strong> (<em>1d numpy arrary</em><em> or </em><em>list of int.</em>) – Number of ghost zones (default=0)</p></li>
+<li><p><strong>time</strong> (<em>float</em><em> or </em><em>None</em>) – Time if that makes sense, else None.</p></li>
+<li><p><strong>iteration</strong> (<em>float</em><em> or </em><em>None</em>) – Iteration if that makes sense, else None.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.abs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>absolute value.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.angle">
+<span class="sig-name descname"><span class="pre">angle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.angle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>complex phase</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.apply_binary">
+<span class="sig-name descname"><span class="pre">apply_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.apply_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a binary function to two regular data sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array.) – Left operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array.) – Right operand.</p></li>
+<li><p><strong>f</strong> (<em>function operating on two numpy arrays</em>) – binary function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>f(a,b).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.apply_unary">
+<span class="sig-name descname"><span class="pre">apply_unary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.apply_unary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a unary function to the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>op</strong> (<em>function operating on a numpy array</em>) – unary function.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.arccos">
+<span class="sig-name descname"><span class="pre">arccos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.arccos" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.arccosh">
+<span class="sig-name descname"><span class="pre">arccosh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.arccosh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic arc cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.arcsin">
+<span class="sig-name descname"><span class="pre">arcsin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.arcsin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.arcsinh">
+<span class="sig-name descname"><span class="pre">arcsinh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.arcsinh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic arc sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.arctan">
+<span class="sig-name descname"><span class="pre">arctan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.arctan" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.arctanh">
+<span class="sig-name descname"><span class="pre">arctanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.arctanh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic arc tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.atan2">
+<span class="sig-name descname"><span class="pre">atan2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.atan2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.conj">
+<span class="sig-name descname"><span class="pre">conj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.conj" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>complex conjugate</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.coords">
+<span class="sig-name descname"><span class="pre">coords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get coordinates as regular datasets. Useful for arithmetic
+operations involving data and coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of coordinates for each dimension</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instances</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.cos">
+<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.cos" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.cosh">
+<span class="sig-name descname"><span class="pre">cosh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.cosh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.diff">
+<span class="sig-name descname"><span class="pre">diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the partial derivative along a given dimension. Uses 
+either a 3-point central difference stencil for 2nd order accuracy, 
+or a five point central stencil for 4th order. At the boundaries, 1 
+point (2 for 4th order) is computed to first order accuracy using 
+one-sided derivatives. The array size in the dimension dim needs to 
+be at least the stencil size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim</strong> (<em>int</em>) – Dimension of partial derivative.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Order of accuracy (2 or 4).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The derivative.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.exp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>exponential</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.flatten">
+<span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove dimensions which are only one gridpoint large.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.grad">
+<span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient. See diff for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – Order of accuracy (2 or 4).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The gradient vector.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Vec</span></code> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.histogram">
+<span class="sig-name descname"><span class="pre">histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D Histogram of the data.
+:param weights:    the weight for each cell. Default is one.
+:type weights:     RegData or numpy array of same shape or None.
+:param vmin:       Lower bound of data to consider. Default is data range.
+:type vmin:        float or None
+:param vmax:       Upper bound of data to consider. Default is data range.
+:type vmax:        float or None
+:param nbins:      Number of bins to create.
+:type nbins:       integer &gt; 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the positions of the data bins and the distribution.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple of two 1D numpy arrays.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.imag">
+<span class="sig-name descname"><span class="pre">imag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.imag" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>imaginary part</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.integral">
+<span class="sig-name descname"><span class="pre">integral</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.integral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the integral over the whole volume of the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The integral.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float (or complex if data is complex)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.interp_mlinear">
+<span class="sig-name descname"><span class="pre">interp_mlinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.interp_mlinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a multilinear interpolation to the coordinate x. If x
+is outside the grid, return the outside value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Coordinate to interpolate to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value at nearest grid point or outside_value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.interp_nearest">
+<span class="sig-name descname"><span class="pre">interp_nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.interp_nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zeroth order interpolation. For positions outside the grid, it
+uses the outside value specified when creating the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Coordinate to interpolate to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value at nearest grid point or outside_value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.interp_nearest_index">
+<span class="sig-name descname"><span class="pre">interp_nearest_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.interp_nearest_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zeroth order interpolation. For positions outside the grid, it
+uses the outside value specified when creating the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>i</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Position in terms of real valued grid index (not 
+a coordinate!)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value at nearest grid point or outside_value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.log" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>natural logarithm</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.log10">
+<span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.log10" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>base-10 logarithm</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> or </em><em>None</em>) – optional, compute max along single axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Maximum value over all points on the grid if axis=None,
+else RegData containing max along given axis.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (or complex if data is complex)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.maximum">
+<span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.maximum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array) – data to compare to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>element-wise maximum</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.mean" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> or </em><em>None</em>) – optional, compute mean along single axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Mean value over all points on the grid if axis=None,
+else RegData containing mean along given axis.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (or complex if data is complex)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> or </em><em>None</em>) – optional, compute min along single axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Minimum value over all points on the grid if axis=None,
+else RegData containing min along given axis.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (or complex if data is complex)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.minimum">
+<span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.minimum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or numpy array) – data to compare to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>element-wise minimum</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.percentiles">
+<span class="sig-name descname"><span class="pre">percentiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fractions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.percentiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find values for which a given fraction(s) of the data is smaller.</p>
+<p>Optionally, the cells can have an optional weight, and absolute counts 
+can be used insted of fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fractions</strong> (<em>list</em><em> or </em><em>array of floats</em>) – list of fraction/absolute values</p></li>
+<li><p><strong>weights</strong> (<a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><em>RegData</em></a><em> or </em><em>numpy array of same shape</em><em> or </em><em>None.</em>) – the weight for each cell. Default is one.</p></li>
+<li><p><strong>relative</strong> (<em>bool</em>) – whether fractions refer to relative or absolute count.</p></li>
+<li><p><strong>vmin</strong> (<em>float</em><em> or </em><em>None</em>) – Lower bound of data to consider. Default is data range.</p></li>
+<li><p><strong>vmax</strong> (<em>float</em><em> or </em><em>None</em>) – Upper bound of data to consider. Default is data range.</p></li>
+<li><p><strong>nbins</strong> (<em>integer &gt; 1</em>) – Number of bins to create.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>data values corresponding to the given fractions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>1D numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.real">
+<span class="sig-name descname"><span class="pre">real</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.real" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>real part</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.reflect">
+<span class="sig-name descname"><span class="pre">reflect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.reflect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill points assuming reflection symmetry along given axis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample the data to a regular grid geometry specified. 
+Coordinates outside the grid are treated according to the mode 
+parameter, where ‘constant’ means use the outside value, ‘nearest’
+means zero-order extrapolation. Can create new data for results or 
+overwrite a given dataset (for efficiency).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>order</strong> (<em>int</em>) – Interpolation order.</p></li>
+<li><p><strong>output</strong> (<em>None</em><em> or </em><em>numpy array</em>) – If not None, where to write results to.</p></li>
+<li><p><strong>mode</strong> (<em>string</em>) – How to treat outside positions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Interpolated data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sample_generic">
+<span class="sig-name descname"><span class="pre">sample_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sample_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate the data to arbitrary (irregular) coordinates.
+Coordinates outside the grid are treated according to the mode 
+parameter, where ‘constant’ means use the outside value, ‘nearest’
+means zero-order extrapolation. Do not use this method repeatedly,
+instead use the spline() method which is then more efficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coords</strong> (<em>list of numpy arrays</em>) – List of coordinate arrays for each dimension.</p></li>
+<li><p><strong>order</strong> (<em>Int</em>) – Order of the spline, must be in [2,5]. Default is 3.</p></li>
+<li><p><strong>mode</strong> (<em>'constant'</em><em>, </em><em>'nearest'</em><em>, </em><em>'reflect'</em><em> or </em><em>'wrap'</em>) – How to treat values outside the data range.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Interpolated data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy array with same dimension as the coordinate
+arrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sample_intersect">
+<span class="sig-name descname"><span class="pre">sample_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sample_intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace data in the intersection with another object by resampled data
+from the other object. Ghost zones in the other object are excluded from
+the intersection, but used during the interpolation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sign" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sign</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sin">
+<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sinh">
+<span class="sig-name descname"><span class="pre">sinh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sinh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.spline">
+<span class="sig-name descname"><span class="pre">spline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.spline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns interpolating spline that represents the data
+as a function. Always use this instead of calling sample_generic()
+repeatedly, because computing the spline coefficients is 
+expensive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>order</strong> (<em>Int</em>) – Order of the spline, must be in [2,5]. Default is 3.</p></li>
+<li><p><strong>mode</strong> (<em>'constant'</em><em>, </em><em>'nearest'</em><em>, </em><em>'reflect'</em><em> or </em><em>'wrap'</em>) – How to treat values outside the data range.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.sqrt">
+<span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.sqrt" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>square root</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.tan">
+<span class="sig-name descname"><span class="pre">tan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.tan" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.RegData.tanh">
+<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.RegData.tanh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.grid_data.</span></span><span class="sig-name descname"><span class="pre">CompData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alldat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composite data consisting of one or more regular datasets with 
+different grid spacings, i.e. a mesh refinement hirachy. The grid 
+spacings should differ by powers of two. Origins of the components 
+are shifted relative to each other only by multiples of the finest 
+spacing. Basic arithmetic operations are defined for this class, as 
+well as interpolation and resampling. This class can be iterated over 
+to get all the regular datasets, ordered by refinement level and
+componen number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alldat</strong> (list of <a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a> instances.) – list of regular datasets.</p></li>
+<li><p><strong>outside_value</strong> (<em>float</em>) – Value to use when interpolating outside the 
+grid.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.abs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>absolute value.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.angle">
+<span class="sig-name descname"><span class="pre">angle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.angle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>complex phase</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.apply_binary">
+<span class="sig-name descname"><span class="pre">apply_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.apply_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a binary function to two data sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>) – Left operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>) – Right operand.</p></li>
+<li><p><strong>op</strong> (<em>function operating on two numpy arrays</em>) – binary function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>f(a,b).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.apply_unary">
+<span class="sig-name descname"><span class="pre">apply_unary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.apply_unary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a unary function to the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>op</strong> (<em>function operating on a numpy array</em>) – unary function.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.arccos">
+<span class="sig-name descname"><span class="pre">arccos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.arccos" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.arccosh">
+<span class="sig-name descname"><span class="pre">arccosh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.arccosh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic arc cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.arcsin">
+<span class="sig-name descname"><span class="pre">arcsin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.arcsin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.arcsinh">
+<span class="sig-name descname"><span class="pre">arcsinh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.arcsinh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic arc sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.arctan">
+<span class="sig-name descname"><span class="pre">arctan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.arctan" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.arctanh">
+<span class="sig-name descname"><span class="pre">arctanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.arctanh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic arc tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.atan2">
+<span class="sig-name descname"><span class="pre">atan2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.atan2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>arc tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.conj">
+<span class="sig-name descname"><span class="pre">conj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.conj" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>complex conjugate</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.coords">
+<span class="sig-name descname"><span class="pre">coords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get coordinates as composite datasets with the same structure. 
+Useful for arithmetic operations involving data and coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of coordinates for each dimension</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a> instances</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.cos">
+<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.cos" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.cosh">
+<span class="sig-name descname"><span class="pre">cosh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.cosh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic cosine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.diff">
+<span class="sig-name descname"><span class="pre">diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the partial derivative along a given dimension. Uses 
+either a 3-point central difference stencil for 2nd order accuracy, 
+or a five point central stencil for 4th order. At the boundaries, 1 
+point (2 for 4th order) is computed to first order accuracy using 
+one-sided derivatives. The array size in the dimension dim needs to 
+be at least the stencil size.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The derivative is computed for each refinement level and 
+component independently, if there are not enough ghost zones the
+order of accuracy drops to one at each component boundary.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim</strong> (<em>int</em>) – Dimension of partial derivative.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Order of accuracy (2 or 4).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The derivative.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a> instance with same structure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.dim_ext">
+<span class="sig-name descname"><span class="pre">dim_ext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.dim_ext" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the extend in each dimension is larger than one 
+gridpoint.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array of bools</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.dx_coarse">
+<span class="sig-name descname"><span class="pre">dx_coarse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.dx_coarse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid spacing of coarsest level</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.dx_finest">
+<span class="sig-name descname"><span class="pre">dx_finest</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.dx_finest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid spacing of finest level</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.exp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>exponential</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.grad">
+<span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient. See diff for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – Order of accuracy (2 or 4).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The gradient vector.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Vec</span></code> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.imag">
+<span class="sig-name descname"><span class="pre">imag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.imag" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>imaginary part</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.integral">
+<span class="sig-name descname"><span class="pre">integral</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.integral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the integral over the whole volume of the grid.
+Note this is currently only implemented for the case of one
+refinement level with only one component, otherwise raises an
+exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The integral.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float (or complex if data is complex)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.interp_mlinear">
+<span class="sig-name descname"><span class="pre">interp_mlinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.interp_mlinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a multilinear interpolation to the coordinate x, using 
+the finest grid containing x. If x is outside the grid, return the 
+outside value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Coordinate to interpolate to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value at nearest grid point or outside_value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.interp_nearest">
+<span class="sig-name descname"><span class="pre">interp_nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.interp_nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zeroth order interpolation, using the finest available grid 
+covering the given coordinate. For positions outside the grid, it
+uses the outside value specified when creating the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Coordinate to interpolate to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value at nearest grid point or outside_value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.log" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>natural logarithm</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.log10">
+<span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.log10" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>base-10 logarithm</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.max" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The maximum of the data.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.maximum">
+<span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.maximum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>) – data to compare to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>element-wise maximum</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.min" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The minimum of the data.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>same as data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.minimum">
+<span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.minimum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>) – data to compare to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>element-wise minimum</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.num_dims">
+<span class="sig-name descname"><span class="pre">num_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.num_dims" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of dimensions.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.real">
+<span class="sig-name descname"><span class="pre">real</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.real" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>real part</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples to a regular grid using.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geom</strong> (<a class="reference internal" href="#postcactus.grid_data.RegGeom" title="postcactus.grid_data.RegGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegGeom</span></code></a>) – Regular grid geometry to sample to.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Order of interpolation.</p></li>
+<li><p><strong>dest</strong> (<em>Numpy array</em>) – optional, use existing array for result</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resampled data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.sample_alt">
+<span class="sig-name descname"><span class="pre">sample_alt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.sample_alt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples to a regular grid with alternative method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geom</strong> (<a class="reference internal" href="#postcactus.grid_data.RegGeom" title="postcactus.grid_data.RegGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegGeom</span></code></a>) – Regular grid geometry to sample to.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Order of interpolation.</p></li>
+<li><p><strong>dest</strong> (<em>Numpy array</em>) – optional, use existing array for result</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resampled data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.scale_coords">
+<span class="sig-name descname"><span class="pre">scale_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.scale_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescale all coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scale</strong> (<em>float</em><em> or </em><em>1d numpy array</em>) – Factor to scale by.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.sign" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sign</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.sin">
+<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.sin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.sinh">
+<span class="sig-name descname"><span class="pre">sinh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.sinh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic sine</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.sqrt">
+<span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.sqrt" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>square root</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.tan">
+<span class="sig-name descname"><span class="pre">tan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.tan" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.tanh">
+<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.tanh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hyperbolic tangens</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.x0">
+<span class="sig-name descname"><span class="pre">x0</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The bounding box corner with minimum coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Corner coordinate.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.grid_data.CompData.x1">
+<span class="sig-name descname"><span class="pre">x1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.CompData.x1" title="Permalink to this definition">¶</a></dt>
+<dd><p>The bounding box corner with maximum coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Corner coordinate.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>1d numpy array of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.grid_data.sample">
+<span class="sig-prename descclassname"><span class="pre">postcactus.grid_data.</span></span><span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a regular dataset by sampling a scalar function on a 
+regular grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Anything accepting 1d numpy array as input and returns 
+scalar.</em>) – The function to sample.</p></li>
+<li><p><strong>x0</strong> (<em>1d numpy array</em><em> or </em><em>list of float</em>) – Minimum corner of regular sample grid.</p></li>
+<li><p><strong>x0</strong> – Maximum corner of regular sample grid.</p></li>
+<li><p><strong>shape</strong> (<em>1d numpy array</em><em> or </em><em>list of int</em>) – Number of sample points in each dimension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sampled data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#postcactus.grid_data.RegData" title="postcactus.grid_data.RegData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegData</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.grid_data.merge_comp_data_1d">
+<span class="sig-prename descclassname"><span class="pre">postcactus.grid_data.</span></span><span class="sig-name descname"><span class="pre">merge_comp_data_1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.grid_data.merge_comp_data_1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert 1D refined grid hierachy into irregularly (piecewise 
+regularly) spaced 1D data, using the finest level available at each 
+interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>comps</strong> (<a class="reference internal" href="#postcactus.grid_data.CompData" title="postcactus.grid_data.CompData"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompData</span></code></a>) – Grid hierachy.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>coordinates and data values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>two 1d numpy arrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="simdir.html"
+                        title="previous chapter">Work with Simulation Directories</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="timeseries.html"
+                        title="next chapter">Representation of Time Series</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/grid_data.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="timeseries.html" title="Representation of Time Series"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="simdir.html" title="Work with Simulation Directories"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Representation of Grid Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

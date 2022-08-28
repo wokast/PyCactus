@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Grid Data &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Scalar Data" href="cactus_scalars.html" />
+    <link rel="prev" title="Representation of Time Series" href="timeseries.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_scalars.html" title="Get Scalar Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="timeseries.html" title="Representation of Time Series"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Grid Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.cactus_grid_omni">
+<span id="get-grid-data"></span><h1>Get Grid Data<a class="headerlink" href="#module-postcactus.cactus_grid_omni" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniDir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_grid_omni.</span></span><span class="sig-name descname"><span class="pre">GridOmniDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides access to all grid data.</p>
+<p>This includes 1D-3D data in hdf5 format as well as 1D ASCII 
+data. Data of the required dimensionality is read from any format 
+available (hdf5 preferred over ascii). If necessary, cuts are applied
+to 2D/3D data to get requested 1D/2D data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Access to 1D data along x-axis.</p></li>
+<li><p><strong>y</strong> – Access to 1D data along y-axis.</p></li>
+<li><p><strong>z</strong> – Access to 1D data along z-axis.</p></li>
+<li><p><strong>xy</strong> – Access to 2D data along xy-plane.</p></li>
+<li><p><strong>xz</strong> – Access to 2D data along xz-plane.</p></li>
+<li><p><strong>yz</strong> – Access to 2D data along yz-plane.</p></li>
+<li><p><strong>xyz</strong> – Access to 3D data.</p></li>
+<li><p><strong>hdf5</strong> – Access specifically hdf5 grid data.</p></li>
+<li><p><strong>ascii</strong> – Access specifically ascii grid data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_grid_omni.</span></span><span class="sig-name descname"><span class="pre">GridOmniReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides access to all grid data of given dimensions.</p>
+<p>This includes hdf5 format and, for 1D data, ASCII format. Data is 
+read from any format available (hdf5 preferred over ascii). If 
+necessary, cuts are applied to available data in order to get the 
+requested dimensionality.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.all_fields">
+<span class="sig-name descname"><span class="pre">all_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.all_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all available variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.dimensionality">
+<span class="sig-name descname"><span class="pre">dimensionality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.dimensionality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimensionality</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.get_grid_spacing">
+<span class="sig-name descname"><span class="pre">get_grid_spacing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.get_grid_spacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get grid spacing for a given refinement level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – refinement level.</p></li>
+<li><p><strong>name</strong> – variable from which to extract the spacing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.get_iters">
+<span class="sig-name descname"><span class="pre">get_iters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.get_iters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of iterations for a given variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.get_restarts">
+<span class="sig-name descname"><span class="pre">get_restarts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.get_restarts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of restarts for a given variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.get_times">
+<span class="sig-name descname"><span class="pre">get_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.get_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of iteration times for a given variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read grid data for given variable and iteration.</p>
+<p>This can either return a grid hierarchy or resample to a uniform 
+grid. For the latter, there is an option to return the refinement
+level used for each point instead of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – variable to read.</p></li>
+<li><p><strong>it</strong> – iteration to read.</p></li>
+<li><p><strong>geom</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegGeom" title="postcactus.grid_data.RegGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegGeom</span></code></a> instance) – if given, resample to uniform grid.</p></li>
+<li><p><strong>adjust_spacing</strong> – whether to snap grid spacing to next finest level.</p></li>
+<li><p><strong>order</strong> (<em>0</em><em> or </em><em>1</em>) – interpolation order for resampling.</p></li>
+<li><p><strong>outside_val</strong> – fill value for points not covered by data.</p></li>
+<li><p><strong>level_fill</strong> – if True, return refinement level instead of actual data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_grid_omni.GridOmniReader.snap_spacing_to_grid">
+<span class="sig-name descname"><span class="pre">snap_spacing_to_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_grid_omni.GridOmniReader.snap_spacing_to_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Snap a given grid to the next finest grid in the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geom</strong> (<a class="reference internal" href="grid_data.html#postcactus.grid_data.RegGeom" title="postcactus.grid_data.RegGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegGeom</span></code></a> instance) – the initial geometry</p></li>
+<li><p><strong>name</strong> – variable from which to read grid spacing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="timeseries.html"
+                        title="previous chapter">Representation of Time Series</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cactus_scalars.html"
+                        title="next chapter">Get Scalar Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cactus_grid.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cactus_scalars.html" title="Get Scalar Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="timeseries.html" title="Representation of Time Series"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Grid Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

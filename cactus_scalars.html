@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Scalar Data &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Simulation Parameters" href="parfiles.html" />
+    <link rel="prev" title="Get Grid Data" href="cactus_grid.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parfiles.html" title="Get Simulation Parameters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cactus_grid.html" title="Get Grid Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Scalar Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.cactus_scalars">
+<span id="get-scalar-data"></span><h1>Get Scalar Data<a class="headerlink" href="#module-postcactus.cactus_scalars" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.cactus_scalars" title="postcactus.cactus_scalars"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cactus_scalars</span></code></a> module provides functions to load 
+timeseries in Cactus formats and a class <a class="reference internal" href="#postcactus.cactus_scalars.ScalarsDir" title="postcactus.cactus_scalars.ScalarsDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarsDir</span></code></a> for easy 
+access to all timeseries in a Cactus simulation directory. This module 
+is normally not used directly, but from the <a class="reference internal" href="simdir.html#module-postcactus.simdir" title="postcactus.simdir"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simdir</span></code></a> module. 
+The data loaded by this module is represented as 
+<a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a> objects.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.IntegralsReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_scalars.</span></span><span class="sig-name descname"><span class="pre">IntegralsReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_scalar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.IntegralsReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class to convert norms to integrals using grid volume
+saved by volomnia thorn. Not intended for direct use.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.IntegralsReader.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.IntegralsReader.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variable if available, else return a default value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.NormInfOmniReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_scalars.</span></span><span class="sig-name descname"><span class="pre">NormInfOmniReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.NormInfOmniReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class to transparently get inf norm either from saved
+inf norm if available or else from min and max norms, if available.
+Not intended for direct use.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.NormInfOmniReader.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.NormInfOmniReader.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variable if available, else return a default value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.ScalarReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_scalars.</span></span><span class="sig-name descname"><span class="pre">ScalarReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.ScalarReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class to read various types of scalar data. Not intended
+for direct use.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.ScalarReader.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.ScalarReader.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variable if available, else return a default value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.ScalarsDir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_scalars.</span></span><span class="sig-name descname"><span class="pre">ScalarsDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.ScalarsDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides acces to various types of scalar data in
+a given simulation directory. Typically used from simdir instance.
+The different scalars are available as attributes:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scalar</strong> – access to grid scalars.</p></li>
+<li><p><strong>min</strong> – access to minimum reduction.</p></li>
+<li><p><strong>max</strong> – access to maximum reduction.</p></li>
+<li><p><strong>norm1</strong> – access to norm1 reduction.</p></li>
+<li><p><strong>norm2</strong> – access to norm2 reduction.</p></li>
+<li><p><strong>average</strong> – access to average reduction.</p></li>
+<li><p><strong>infnorm</strong> – access to inf-norm reduction.</p></li>
+<li><p><strong>integral</strong> – access to integral over coordinate volume.</p></li>
+<li><p><strong>absint</strong> – access to integral of modulus.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Each of those works as a dictionary mapping variable names to 
+<a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a> instances.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>infnorm is reconstructed from min and max if infnorm itself is not 
+available.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>integral and absint require the grid volume saved by the 
+‘volomnia’ thorn.</p>
+</div>
+<p>The constructor is not intended for direct use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sd</strong> (<a class="reference internal" href="simdir.html#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimDir</span></code></a> instance.) – Simulation directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.load_cactus_0d">
+<span class="sig-prename descclassname"><span class="pre">postcactus.cactus_scalars.</span></span><span class="sig-name descname"><span class="pre">load_cactus_0d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.load_cactus_0d" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED. Load 0D CACTUS ASCII timeseries, e.g. rho..asc. 
+If the file contains overlapping time intervals (as happens when 
+restarting in the same directory), the latest of the overlapping 
+segments is kept and the others removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> (<em>string</em>) – Path to the data file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The time series.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.cactus_scalars.load_cactus_scalar">
+<span class="sig-prename descclassname"><span class="pre">postcactus.cactus_scalars.</span></span><span class="sig-name descname"><span class="pre">load_cactus_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_scalars.load_cactus_scalar" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED. Load scalar CACTUS timeseries in 3 column ASCII format, e.g. 
+rho.maximum.asc. If the file contains overlapping time intervals
+(as happens when restarting in the same directory), the latest
+of the overlapping segments is kept and the others removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> (<em>string</em>) – Path to the data file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The time series.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cactus_grid.html"
+                        title="previous chapter">Get Grid Data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parfiles.html"
+                        title="next chapter">Get Simulation Parameters</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cactus_scalars.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parfiles.html" title="Get Simulation Parameters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cactus_grid.html" title="Get Grid Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Scalar Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

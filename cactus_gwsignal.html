@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Gravitational Wave Data &#8212; PostCactus documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Multipole Component Data" href="multipoles.html" />
+    <link rel="prev" title="Get Apparent Horizon Information" href="cactus_ah.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="multipoles.html" title="Get Multipole Component Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cactus_ah.html" title="Get Apparent Horizon Information"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Gravitational Wave Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-postcactus.cactus_gwsignal">
+<span id="get-gravitational-wave-data"></span><h1>Get Gravitational Wave Data<a class="headerlink" href="#module-postcactus.cactus_gwsignal" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-postcactus.cactus_gwsignal" title="postcactus.cactus_gwsignal"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cactus_gwsignal</span></code></a> module provides classes to access 
+gravitational wave signals computed by various CACTUS thorns using either 
+the Moncrief formalism or the Weyl scalar. For both, GW strain and 
+spectrum can be computed.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWMoncrief">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_gwsignal.</span></span><span class="sig-name descname"><span class="pre">CactusGWMoncrief</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWMoncrief" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is used to obtain GW signal multipole components 
+computed by the thorn WaveExtract, using the Moncrief variables 
+<span class="math notranslate nohighlight">\(Q_\mathrm{odd}, Q_\mathrm{even}\)</span>. Data from multiple output 
+directories is transparently merged. The following members are 
+defined:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>available_l</strong> – Spherical indices l of available components
+(sorted list of int)</p></li>
+<li><p><strong>available_m</strong> – Spherical indices m of available components
+(sorted list of int)</p></li>
+<li><p><strong>available_dist</strong> – Coordinate radius of available detectors.
+(sorted list of float)</p></li>
+<li><p><strong>dirs</strong> – The data directories.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The constructor is not intended for direct use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sd</strong> (<a class="reference internal" href="simdir.html#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimDir</span></code></a> instance.) – Simulation directory.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWMoncrief.detector">
+<span class="sig-name descname"><span class="pre">detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWMoncrief.detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the detector at given distance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWMoncrief.get_Q">
+<span class="sig-name descname"><span class="pre">get_Q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWMoncrief.get_Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Moncrief variables 
+<span class="math notranslate nohighlight">\(Q_\mathrm{odd}, Q_\mathrm{even}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – Distance of detector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(Q_\mathrm{odd}, Q_\mathrm{even}\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of two <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWMoncrief.get_eff_strain">
+<span class="sig-name descname"><span class="pre">get_eff_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWMoncrief.get_eff_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get effective gravitational wave spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – Distance of detector.</p></li>
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\((f,h^\mathrm{eff}(f))\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of two 1D numpy arrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWMoncrief.get_strain">
+<span class="sig-name descname"><span class="pre">get_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWMoncrief.get_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get gravitational wave strain using the fixed frequency 
+integration method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – Distance of detector.</p></li>
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(h^+, h^\times\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of two <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWMoncrief.has_detector">
+<span class="sig-name descname"><span class="pre">has_detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWMoncrief.has_detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given multipole component extracted at a given
+distance is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – Distance of detector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If available or not</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWPsi4MP">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_gwsignal.</span></span><span class="sig-name descname"><span class="pre">CactusGWPsi4MP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWPsi4MP" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is used to obtain GW signal multipole components from
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> Weyl scalar multipole components extracted at 
+various distances. Use the [] operator to get the detector at a 
+given distance, as <a class="reference internal" href="#postcactus.cactus_gwsignal.GWPsi4Det" title="postcactus.cactus_gwsignal.GWPsi4Det"><code class="xref py py-class docutils literal notranslate"><span class="pre">GWPsi4Det</span></code></a> instance, and operator
+“in” to check if radius is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>available_lm</strong> – indices (l,m) of available components
+(list of tuples)</p></li>
+<li><p><strong>available_l</strong> – Spherical indices l of available components
+(sorted list of int)</p></li>
+<li><p><strong>available_m</strong> – Spherical indices m of available components
+(sorted list of int)</p></li>
+<li><p><strong>available_dist</strong> – Coordinate radius of available detectors.
+(sorted list of float)</p></li>
+<li><p><strong>dirs</strong> – The data directories.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The constructor is not intended for direct use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sd</strong> (<a class="reference internal" href="simdir.html#postcactus.simdir.SimDir" title="postcactus.simdir.SimDir"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimDir</span></code></a> instance.) – Simulation directory.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWPsi4MP.get_eff_strain">
+<span class="sig-name descname"><span class="pre">get_eff_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWPsi4MP.get_eff_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWPsi4MP.get_psi4">
+<span class="sig-name descname"><span class="pre">get_psi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWPsi4MP.get_psi4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWPsi4MP.get_psi4_inst_freq">
+<span class="sig-name descname"><span class="pre">get_psi4_inst_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsmooth0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsmooth1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWPsi4MP.get_psi4_inst_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWPsi4MP.get_strain">
+<span class="sig-name descname"><span class="pre">get_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWPsi4MP.get_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.CactusGWPsi4MP.has_detector">
+<span class="sig-name descname"><span class="pre">has_detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.CactusGWPsi4MP.has_detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given multipole component extracted at a given
+distance is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – Distance of detector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If available or not</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">postcactus.cactus_gwsignal.</span></span><span class="sig-name descname"><span class="pre">GWPsi4Det</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the GW signal multipole components from
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> Weyl scalar available at a given distance.
+To check if component is available, use the operator “in”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dist</strong> – The coordinate distance at which the 
+components were extracted.</p></li>
+<li><p><strong>available_lm</strong> – indices (l,m) of available components
+(list of tuples)</p></li>
+<li><p><strong>available_l</strong> – Spherical indices l of available components
+(sorted list of int)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_angmom_z">
+<span class="sig-name descname"><span class="pre">get_angmom_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_angmom_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute z-component of total angular momentum radiated in GW by 
+given multipole component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>w0</strong> (<em>float</em><em> or </em><em>None</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>tmin</strong> (<em>float</em><em> or </em><em>None</em>) – Start integration at this (non-retarded) time.</p></li>
+<li><p><strong>tmax</strong> (<em>float</em><em> or </em><em>None</em>) – Stop integration at this (non-retarded) time.</p></li>
+<li><p><strong>rs</strong> – Estimate for areal radius.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated angular momentum.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_eff_strain">
+<span class="sig-name descname"><span class="pre">get_eff_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_eff_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get effective gravitational wave spectrum, in terms of
+the dimensionless quantity</p>
+<div class="math notranslate nohighlight">
+\[h_\mathrm{eff}(f) = 
+  f \sqrt{\tilde{h}^2_+(f) + \tilde{h}^2_\times(f)}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\((f,h_\mathrm{eff}(f))\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of two 1D numpy arrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_energy">
+<span class="sig-name descname"><span class="pre">get_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute total energy radiated in GW by given multipole component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>w0</strong> (<em>float</em><em> or </em><em>None</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>tmin</strong> (<em>float</em><em> or </em><em>None</em>) – Start integration at this (non-retarded) time.</p></li>
+<li><p><strong>tmax</strong> (<em>float</em><em> or </em><em>None</em>) – Stop integration at this (non-retarded) time.</p></li>
+<li><p><strong>rs</strong> – Estimate for areal radius</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Total radiated energy</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_power">
+<span class="sig-name descname"><span class="pre">get_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute power radiated in GW by given multipole component.
+The required time integration of <span class="math notranslate nohighlight">\(\Psi_4\)</span> is done via
+fixed frequency integration. The areal radius is approximated
+by coordinate radius, unless another estimate is provided.
+The formula used is from <a class="reference internal" href="#nahe2015" id="id1"><span>[NaHe2015]</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\dot{E}(t) = \frac{r^2}{16 \pi} \sum_{l,m} 
+           \left \lvert
+           \int_{-\infty}^t \Psi_4^{lm}(u) \mathrm{d}u 
+           \right\rvert^2\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>rs</strong> (<em>float</em><em> or </em><em>None</em>) – Estimate for areal radius</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated power</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_psi4">
+<span class="sig-name descname"><span class="pre">get_psi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_psi4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a component of the decomposition of the Weyl scalar 
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> into spherical harmonics with spin weight -2, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\Psi_4(t, r, \theta, \phi) = \sum_{l=2}^\infty \sum_{m=-l}^l
+  \Psi_4^{lm}(t,r) {}_{-2}Y_{lm}(\theta, \phi)\]</div>
+<p>were r and t are extraction radius and non-retarded coordinate time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\Psi_4^{lm}\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_psi4_inst_freq">
+<span class="sig-name descname"><span class="pre">get_psi4_inst_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsmooth0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsmooth1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_psi4_inst_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_strain">
+<span class="sig-name descname"><span class="pre">get_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the GW strain components multiplied by the extraction 
+radius. The strain is extracted from the Weyl Scalar using the
+formula (see <a class="reference internal" href="#nahe2015" id="id2"><span>[NaHe2015]</span></a>)</p>
+<div class="math notranslate nohighlight">
+\[h_+^{lm}(r,t) 
+- i h_\times^{lm}(r,t) = \int_{-\infty}^t \mathrm{d}u 
+           \int_{-\infty}^u \mathrm{d}v\, \Psi_4^{lm}(r,v)\]</div>
+<p>The time integration is carried out using the fixed frequency 
+integration method described in  <a class="reference internal" href="#repo2011" id="id3"><span>[RePo2011]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>taper</strong> (<em>Bool</em>) – Taper waveform (length 2 pi / w0) bfore FFI</p></li>
+<li><p><strong>cut</strong> (<em>Bool</em>) – Cut interval 2 pi / w0 at both ends after FFI</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(h^+ r, h^\times r\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of two <a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_torque_z">
+<span class="sig-name descname"><span class="pre">get_torque_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_torque_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute z-component of angular momentum radiated per time in 
+GW by a given multipole component. The required time integrations of 
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> are done via fixed frequency integration. The areal 
+radius is approximated by coordinate radius, unless another 
+estimate is provided. The formula used is from <a class="reference internal" href="#nahe2015" id="id4"><span>[NaHe2015]</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\dot{J}_z(t) = \frac{r^2}{16 \pi} \Im \left[ \sum_{l,m} m
+           \left(
+           \int_{-\infty}^t \mathrm{d}u \, \Psi_4^{lm}(u) 
+           \right) \left(
+           \int_{-\infty}^t \mathrm{d}u
+             \int_{-\infty}^u \mathrm{d}v \,
+               \bar{\Psi}_4^{lm}(v) 
+           \right) \right]\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Multipole component l.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Multipole component m.</p></li>
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>rs</strong> (<em>float</em><em> or </em><em>None</em>) – Estimate for areal radius.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated angular momentum per time by component (l,m)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_total_angmom_z">
+<span class="sig-name descname"><span class="pre">get_total_angmom_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_total_angmom_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute z-component of total angular momentum radiated in GW by 
+all multipole components combined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>tmin</strong> (<em>float</em><em> or </em><em>None</em>) – Start integration at this (non-retarded) time.</p></li>
+<li><p><strong>tmax</strong> (<em>float</em><em> or </em><em>None</em>) – Stop integration at this (non-retarded) time.</p></li>
+<li><p><strong>rs</strong> (<em>float</em><em> or </em><em>None</em>) – Estimate for areal radius.</p></li>
+<li><p><strong>ret_comps</strong> (<em>bool</em>) – If True, also return dictionary with results for 
+the single components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated angular momentum.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or (float,dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_total_energy">
+<span class="sig-name descname"><span class="pre">get_total_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_total_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute total energy radiated in GW by all multipole components
+combined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>tmin</strong> (<em>float</em><em> or </em><em>None</em>) – Start integration at this (non-retarded) time.</p></li>
+<li><p><strong>tmax</strong> (<em>float</em><em> or </em><em>None</em>) – Stop integration at this (non-retarded) time.</p></li>
+<li><p><strong>rs</strong> (<em>float</em><em> or </em><em>None</em>) – Estimate for areal radius</p></li>
+<li><p><strong>ret_comps</strong> (<em>bool</em>) – If True, also return dictionary with energy in 
+single components</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated energy</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or (float,dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_total_power">
+<span class="sig-name descname"><span class="pre">get_total_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_total_power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute power radiated in GW by all available multipole 
+components combined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>rs</strong> (<em>float</em><em> or </em><em>None</em>) – Estimate for areal radius</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated power</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.GWPsi4Det.get_total_torque_z">
+<span class="sig-name descname"><span class="pre">get_total_torque_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.GWPsi4Det.get_total_torque_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute z-component of angular momentum radiated per time in GW 
+by all available multipole components combined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w0</strong> (<em>float</em>) – Cutoff angular frequency for fixed frequency 
+integration.</p></li>
+<li><p><strong>rs</strong> (<em>float</em><em> or </em><em>None</em>) – Estimate for areal radius.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Radiated angular momentum per time.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.get_phase">
+<span class="sig-prename descclassname"><span class="pre">postcactus.cactus_gwsignal.</span></span><span class="sig-name descname"><span class="pre">get_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.get_phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the complex phase of a complex-valued signal such that
+no phase wrap-arounds occur, i.e. if the input is continous, so is
+the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a>) – Complex-valued signal</p></li>
+<li><p><strong>t0</strong> (<em>float</em><em> or </em><em>None</em>) – Optionally, add a phase shift such that phase is zero at 
+the given time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Continuous complex phase.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="timeseries.html#postcactus.timeseries.TimeSeries" title="postcactus.timeseries.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="postcactus.cactus_gwsignal.load_gw_moncrief">
+<span class="sig-prename descclassname"><span class="pre">postcactus.cactus_gwsignal.</span></span><span class="sig-name descname"><span class="pre">load_gw_moncrief</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_re</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_im</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#postcactus.cactus_gwsignal.load_gw_moncrief" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load complex Moncrief variables Qodd or Qeven from seperate 
+files for real and imaginary part.</p>
+</dd></dl>
+
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="nahe2015"><span class="brackets">NaHe2015</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>,<a href="#id4">3</a>)</span></dt>
+<dd><ol class="upperalpha simple" start="8">
+<li><p>Nakano, J. Healy et al, <a class="reference external" href="http://dx.doi.org/10.1103/PhysRevD.91.104022">Phys. Rev. D 91, 104022 (2015)</a></p></li>
+</ol>
+</dd>
+<dt class="label" id="repo2011"><span class="brackets"><a class="fn-backref" href="#id3">RePo2011</a></span></dt>
+<dd><ol class="upperalpha simple" start="3">
+<li><p>Reisswig, D. Pollney, <a class="reference external" href="http://dx.doi.org/10.1088/0264-9381/28/19/195015">Class. Quantum Grav. 28 195015 (2011)</a></p></li>
+</ol>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cactus_ah.html"
+                        title="previous chapter">Get Apparent Horizon Information</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="multipoles.html"
+                        title="next chapter">Get Multipole Component Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cactus_gwsignal.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="multipoles.html" title="Get Multipole Component Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cactus_ah.html" title="Get Apparent Horizon Information"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PostCactus documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Get Gravitational Wave Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>
