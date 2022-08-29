@@ -107,7 +107,7 @@ class GridASCIIFile(object):
     if (field != self._varname):
       raise RuntimeError("Field %s not available" % field)
     #
-    if (cut is not None):
+    if not ((cut is None) or (cut==[None])):
       raise RuntimeError("Invalid cut (cannot cut 1D)")
     #
     self.open()
