@@ -25,13 +25,17 @@ Basic usage, get parameters and time series: ::
   >>>axvline(pks.all[0].f)
   <matplotlib.lines.Line2D at 0x48f1e10>
 """
+from __future__ import division
+from builtins import str
+from builtins import range
+from builtins import object
 
 from numpy import *
 from scipy.interpolate.interpolate import interp1d
 from scipy.optimize.minpack import leastsq
 
 
-class fitmax:
+class fitmax(object):
   def __init__(self,t,z):
     if issubclass(z.dtype.type, complex):
       y = z.real
@@ -39,7 +43,7 @@ class fitmax:
       y = z
     #
     mt=[]; mz=[]
-    for i in xrange(2,len(y)-3):
+    for i in range(2,len(y)-3):
       if ((abs(y[i-1])<abs(y[i])) and (abs(y[i])>abs(y[i+1]))):
         mt.append(t[i])
         mz.append(y[i])
@@ -54,7 +58,7 @@ class fitmax:
     self.err  = abs(exp(sqrt(sum((mz-mzf)**2)/len(mz)))-1.0)
     self.tau  = -1.0/k1
     self.amp  = exp(k0)
-    (c1,c0)=polyfit(range(0,len(mt)),mt,1)
+    (c1,c0)=polyfit(list(range(0,len(mt))),mt,1)
     self.f    = 0.5/c1
     self.phi  = 2.0*math.pi*c0*self.f
     if cos(2.0*math.pi*self.f*mt[0] - self.phi)*ym0 < 0.0:
@@ -77,7 +81,7 @@ def fitall_residuals(p,t,y):
   return p[0]*exp(-t*p[1])*cos(2.0*math.pi*p[2]*t-p[3]) - y
 #
 
-class fitall:
+class fitall(object):
   def __init__(self,t,z,tau0,f0,amp0,phi0):
     if issubclass(z.dtype.type, complex):
       y = z.real
@@ -132,7 +136,7 @@ def planck_window(eps):
   return mkw
 #
 
-class spec:
+class spec(object):
   """Class representing a Fourier spectrum.
 
   :ivar f:   Frequency
@@ -194,7 +198,7 @@ class spec:
   #
 # 
 
-class peak:
+class peak(object):
   """Represents one peak of a Fourier spectrum.
   
   :ivar f:  Frequency of the frequency bin of the maximum.
@@ -207,7 +211,7 @@ class peak:
   #
 #
 
-class peaks:
+class peaks(object):
   """This class represents the peaks of a Fourier spectrum.
   Each peak is characterized by the frequency of the corresponding
   frequency bin of the power spectrum, as well as the frequency
@@ -231,11 +235,11 @@ class peaks:
     a = a0/a0.max()
     self.all  = []
     self.fmin = f[1]-f[0]
-    for i in xrange(2,len(a)-3):
+    for i in range(2,len(a)-3):
       if ((a[i]>cut) and (a[i-1]<a[i]) and (a[i]>a[i+1])):
         ff=f[i] + 0.5*self.fmin*(a[i+1]-a[i-1])/(2.0*a[i]-a[i-1]-a[i+1])
         self.all.append(peak(f[i],ff,a[i]))
-    self.all.sort(lambda x,y:cmp(y.a,x.a))
+    self.all.sort(key = lambda x : -x.a)
   #
   def __str__(self):
     s = "#%21s %22s %10s \n" % ('f / Hz', 'f_fit / Hz', 'amp.')

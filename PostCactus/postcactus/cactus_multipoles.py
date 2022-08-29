@@ -3,10 +3,10 @@
    The main class is :py:class:`CactusMultipoleDir`, which is 
    provided by :py:class:`~.SimDir` instances.
    
-.. Note:: 
-
-   Currently, only the ascii format is supported.
 """
+
+from builtins import str
+from builtins import object
 
 import os
 import numpy
@@ -31,10 +31,10 @@ class MultipoleDet(object):
     #
     
     self._mps = dict(((k,timeseries.combine_ts(ts)) for 
-                     k,ts in mps.iteritems()))
-    self.available_l  = set((l for l,m in self._mps.iterkeys()))
-    self.available_m  = set((m for l,m in self._mps.iterkeys()))
-    self.available_lm = self._mps.keys()  
+                     k,ts in mps.items()))
+    self.available_l  = set((l for l,m in self._mps.keys()))
+    self.available_m  = set((m for l,m in self._mps.keys()))
+    self.available_lm = list(self._mps.keys())  
   #
   def __contains__(self, key):
     return key in self._mps
@@ -46,7 +46,7 @@ class MultipoleDet(object):
     return self[(l,m)]
   #
   def __iter__(self):
-    for (l,m), ts in self._mps.iteritems():
+    for (l,m), ts in self._mps.items():
       yield l,m,ts
     #
   #
@@ -75,7 +75,7 @@ class MultipoleDetColl(object):
       d.append((l,m,ts))
       self.available_lm.add((l,m))
     #
-    self._dets      = [(s, MultipoleDet(s, d)) for s,d in dets.iteritems()]
+    self._dets      = [(s, MultipoleDet(s, d)) for s,d in dets.items()]
     self._dets.sort()
     self.radii      = [s for s,d in self._dets]
     if len(self.radii) > 0:
@@ -149,7 +149,7 @@ class CactusMultipoleDirText(object):
     return self[key]
   #
   def keys(self):
-    return self._vars.keys()
+    return list(self._vars.keys())
   #
 #
 
@@ -178,7 +178,7 @@ class CactusMultipoleDirH5(object):
     amp     = []
     pat     = re.compile(r'l(\d+)_m([-]?\d+)_r([0-9.]+)')
 
-    for n in mpf.iterkeys():
+    for n in mpf.keys():
       mp = pat.match(n)
       if not mp:
         continue
@@ -212,7 +212,7 @@ class CactusMultipoleDirH5(object):
     return self[key]
   #
   def keys(self):
-    return self._vars.keys()
+    return list(self._vars.keys())
   #
 #
 

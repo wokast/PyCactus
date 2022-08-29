@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-from repplugin import *
+from __future__ import division
+from __future__ import absolute_import
+
+from builtins import range
+from .repplugin import *
 import postcactus.unitconv as ucv
 import os
 

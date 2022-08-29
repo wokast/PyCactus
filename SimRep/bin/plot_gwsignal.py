@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
+from __future__ import print_function
+ 
+from builtins import range
 
 from simrep.stdplot import *
 
@@ -45,8 +49,8 @@ def plot_moncr_all(det, tform, target, formats):
           if (max(max(abs(qe.y)),max(abs(qo.y))) > 1e-10):
             plot_moncr_lm(l, m, dmax, qe, qo, target, formats)
           #
-        except Exception,inst:
-          print "failed to process l=%d, m=%d, d=%.4e (%s)" % (l,m, dmax, inst)
+        except Exception as inst:
+          print("failed to process l=%d, m=%d, d=%.4e (%s)" % (l,m, dmax, inst))
         #
       #
     #
@@ -142,8 +146,8 @@ def plot_psi4_all(det, tform, basen, formats, fcut, tmin):
         f,heff = odet.get_eff_strain(l, m, w0)
         plot_heff_lm(l, m, dmax, f, heff, basen+ 'spec', formats)
       #
-    except Exception,inst:
-      print "failed to process l=%d, m=%d, d=%.4e (%s)" % (l,m, dmax, inst)
+    except Exception as inst:
+      print("failed to process l=%d, m=%d, d=%.4e (%s)" % (l,m, dmax, inst))
     #
   #
 #

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """This movie shows the rest mass density in the xy and xz planes."""
+from __future__ import division
 
 from simvideo.video_matplotlib import *
 from simvideo.video_data_source import *

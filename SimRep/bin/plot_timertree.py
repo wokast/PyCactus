@@ -7,7 +7,7 @@ import numpy as np
 
 def plot_times(tree, fdir, fname, fmts, title='Everything'):
   if not tree: return
-  data    = [(f,n) for n,(f,c) in tree.iteritems()]
+  data    = [(f,n) for n,(f,c) in tree.items()]
   data    = sorted(data)
   times   = np.array([c[0] for c in data])
   labels  = [c[1][-40:] for c in data]
@@ -33,7 +33,7 @@ def plot_times(tree, fdir, fname, fmts, title='Everything'):
   viz.savefig_multi(fp, fmts)
   plt.close(fig)
   del fig
-  subt = [(n,c) for n,(f,c) in tree.iteritems() if c]
+  subt = [(n,c) for n,(f,c) in tree.items() if c]
   for i,(n,c) in enumerate(subt):
     nn = "%s_%d" % (fname,i)
     plot_times(c, fdir, nn, fmts, title=n)

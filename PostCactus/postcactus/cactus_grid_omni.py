@@ -1,3 +1,7 @@
+from builtins import zip
+from builtins import str
+from builtins import object
+
 from postcactus import cactus_grid_h5 as cgr
 from postcactus import cactus_grid_ascii as cgra
 
@@ -34,7 +38,7 @@ class GridOmniReader(object):
       #
     #
 
-    self.fields     = cgr.pythonize_name_dict(self._src.keys(), 
+    self.fields     = cgr.pythonize_name_dict(list(self._src.keys()), 
                         self.bind_field)
     self._vecsrc    = cgr.GridVectorSource(self)
     self._matsrc    = cgr.GridMatrixSource(self)
@@ -51,7 +55,7 @@ class GridOmniReader(object):
   #
   def all_fields(self):
     """Returns a list of all available variables."""
-    return self._src.keys()
+    return list(self._src.keys())
   #
   def dimensionality(self):
     """Dimensionality"""
@@ -82,6 +86,8 @@ class GridOmniReader(object):
     o = {dim:ofs for dim,ofs in zip(self._dims, cut)}
     cut = [o.get(i, self._ofs[i]) for i in sdim]
     
+    # ~ cut   = [(None if i in self._dims else self._ofs[i]) 
+           # ~ for i in sdim]
     return src, cut
   #
   def get_restarts(self, name):

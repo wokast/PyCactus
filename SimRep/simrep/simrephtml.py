@@ -1,16 +1,21 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from builtins import str
+from builtins import filter
+from builtins import object
 import os
 import shutil
-from htmlfactory import *
+from .htmlfactory import *
 
-class RepNav:
+class RepNav(object):
   def __init__(self, name, secs):
     self.name = name
     self.secs = secs
   #
   def filename(self, sec, sub=None):
     n = self.name + '_' + sec.name
-    if (sub != None):
+    if (sub is not None):
       n += ('_' + sub.name)
     elif sec.hassub:
       n += ('_' + sec.subs[0].name)
@@ -24,7 +29,7 @@ class RepNav:
   #
   def rendersec(self, sec, asec, asub):
     if (asec.name == sec.name):
-      if (asub != None):
+      if (asub is not None):
         c1 = tag(sec.name, 'li', Class='open')
         c2 = [self.rendersub(sec, ss, asub) for ss in sec.subs]       
         c2 = tag(c2, 'ul', id='NaviSub')
@@ -42,7 +47,7 @@ class RepNav:
   #
 #
 
-class RepSubs:
+class RepSubs(object):
   def __init__(self, title, name, cont):
     self.title  = title
     self.name   = name
@@ -50,7 +55,7 @@ class RepSubs:
   #
 #
 
-class RepSec:
+class RepSec(object):
   def __init__(self, title, name, cont, subs):
     self.title  = title
     self.name   = name
@@ -60,7 +65,7 @@ class RepSec:
   #
 #
 
-class RepSim:
+class RepSim(object):
   def __init__(self, title, name, secs):
     self.title  = title
     self.name   = name
@@ -109,7 +114,7 @@ class RepSim:
   #
 #
 
-class DocParse:
+class DocParse(object):
   def __init__(self, doc, path):
     self.level0 = ['text', 'emph', 'warn', 'nobreak', 'floatnum', 'intnum', 'newline']
     self.level1 = ['par','table','figure','movie','glist','listing'] \
@@ -187,7 +192,7 @@ class DocParse:
   #
   def table(self, ent):
     cnt = [[self.parse(e, self.level0) for e in r] for r in ent.cont]
-    if (ent.cap==None):
+    if (ent.cap is None):
       return table(cnt, Class='standard')
     tabnum = span(("Table %d:" % self.tabnum), Class='capnum')
     self.tabnum += 1
@@ -225,12 +230,12 @@ class DocParse:
     imgfile,altf = self.autoconvert(imgsrc)
     imgurl  = os.path.relpath(imgfile, self.path)
     cnt     = img(imgurl, os.path.basename(imgurl))
-    if (ent.cap==None):
+    if (ent.cap is None):
       return cnt 
     fignum = span(("Figure %d:" % self.fignum), Class='fignum')
     self.fignum += 1
     cap  = [fignum, self.parse(ent.cap, self.level0)]
-    if (altf != None):
+    if (altf is not None):
       alturl = os.path.relpath(altf[1], self.path)
       cap.append(link(altf[0], alturl))
     #
@@ -252,7 +257,7 @@ class DocParse:
     mov     = os.path.abspath(path) 
 
     fmts  = ['mpeg', 'wmv', 'mov', 'mp4']
-    movs  = filter(os.path.isfile, [mov+'.'+e for e in fmts])
+    movs  = list(filter(os.path.isfile, [mov+'.'+e for e in fmts]))
     if (not movs):
       raise RuntimeError("Movie %s not found." % mov)
     mov   = movs[0]
@@ -262,7 +267,7 @@ class DocParse:
     prevurl = os.path.relpath(prev, self.path)
     thumb   = img(prevurl, os.path.basename(prevurl))
     movlnk  = link(thumb, movurl)
-    if (ent.cap==None):
+    if (ent.cap is None):
       return movlnk
     movnum = span(("Movie %d:" % self.movnum), Class='fignum')
     self.movnum += 1

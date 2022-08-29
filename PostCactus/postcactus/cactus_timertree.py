@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
+from builtins import zip
+from builtins import object
 
 import numpy as np
 import xml.etree.cElementTree as ET
@@ -7,7 +10,7 @@ import os
 
 def cut_tree(tree, cut, tfrac=1.0):
   nd = {n:(f,cut_tree(c, cut, f)) 
-          for n,(f,c) in tree.iteritems() if f>cut}
+          for n,(f,c) in tree.items() if f>cut}
   return nd
 #
 
@@ -26,10 +29,10 @@ def tree_balance(tree, cut, frac=1.0):
 
 def collapse_segments(tree):
   triv = set(['CallFunction'])
-  nd = {n:(f,collapse_segments(c)) for n,(f,c) in tree.iteritems()} 
+  nd = {n:(f,collapse_segments(c)) for n,(f,c) in tree.items()} 
   if len(nd) == 1:
-    sn   = nd.keys()[0]
-    sv   = nd.values()[0][1]
+    sn   = list(nd.keys())[0]
+    sv   = list(nd.values())[0][1]
     pref = '' if sn in triv else sn + "/"
     return {(pref+n):a for n,a in sv.items()}
   #
@@ -38,13 +41,13 @@ def collapse_segments(tree):
 
 def simplify_tree(tree, nmax=3):
   nd = dict()
-  for n,(f,c) in tree.iteritems():
+  for n,(f,c) in tree.items():
     cs   = simplify_tree(c, nmax)
     nsub = len(c)
     if (nsub > 1) and (nsub <= nmax):
       #pref = '' if n.startswith('Call') else n+'__' 
       pref = n+'/' 
-      nd.update([(pref+n1, a1) for n1,a1 in cs.iteritems()]) 
+      nd.update([(pref+n1, a1) for n1,a1 in cs.items()]) 
     else:
       nd[n] = (f,cs)
     #

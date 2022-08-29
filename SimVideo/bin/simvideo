@@ -5,6 +5,8 @@ The available movies are plugins located in the video subpackage.
 Movies are always saved as single frame images, and optionally
 also as video files. Interrupted movies can be resumed.
 """
+from __future__ import print_function
+from builtins import range
 
 import sys
 import os
@@ -49,7 +51,7 @@ def create_moviedir(mdir, mname, resume=False):
 
 def select_frames(mov, start=None, stop=None, every=1):
   frames  = mov.frames
-  idx     = range(0, len(frames), every)
+  idx     = list(range(0, len(frames), every))
   if start is not None:
     idx   = [i for i in idx if (frames[i] >= start)]
   if stop is not None:
@@ -66,26 +68,26 @@ def write_frames(mov, mdir, mname, frselect,
     f     = mov.frames[n]
     fname = "%s.%05d.%s" % (bname, n, fmt)
     
-    print "processing frame %d (index %s)" % (n,f)
+    print("processing frame %d (index %s)" % (n,f))
     
     if skip_existing:
       if os.path.isfile(fname):
-        print "  frame %d already present, skipping." % n
+        print("  frame %d already present, skipping." % n)
         continue
       #
     #
     
-    print "  loading data"
+    print("  loading data")
     mov.load_data(f)
     
-    print "  rendering"
+    print("  rendering")
     mov.make_frame(fname)
     
     gc.collect()
-    print "  done." 
+    print("  done.") 
     nrem  = len(frselect) - m
     if (nrem > 0):
-      print "  %d frames remaining." % nrem
+      print("  %d frames remaining." % nrem)
     #
   #
 #
@@ -95,12 +97,12 @@ def write_snapshot(mov, mdir, mname, frselect, fmt='png'):
   bname   = os.path.join(mdir, mname)
   fname   = "%s.%s" % (bname, fmt)
   f       = mov.frames[frselect]
-  print "creating snapshot for frame %d (index %s)" % (frselect, f)  
-  print "  loading data"
+  print("creating snapshot for frame %d (index %s)" % (frselect, f))  
+  print("  loading data")
   mov.load_data(f)
-  print "  rendering"
+  print("  rendering")
   mov.make_frame(fname)
-  print "  done." 
+  print("  done.") 
 #
 
 def convert(mdir, mname, fmt, xres=None, yres=None, fps=25,
@@ -250,7 +252,7 @@ def main(movmod, opt):
               author=opt.author, comment=movdesc)
     #
   #
-  print "All done."
+  print("All done.")
 #
 
 
@@ -275,11 +277,11 @@ if opt.debug:
 else:
   try:
     main(movmod, opt)
-  except Exception,inst:
-    print 'Failed (',inst,').'
+  except Exception as inst:
+    print('Failed (',inst,').')
     sys.exit(1)
   except:
-    print 'Failed mysteriously.'
+    print('Failed mysteriously.')
     sys.exit(1)
   #
 #

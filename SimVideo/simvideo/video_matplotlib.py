@@ -2,7 +2,10 @@
 """This module contains classes that serve as base classes for movies based on
 matplotlib. Further it provides  functions adding common commandline options,
 e.g. colormap, to a parser.""" 
+from __future__ import division
 
+from builtins import zip
+from builtins import object
 import math
 import numpy as np
 

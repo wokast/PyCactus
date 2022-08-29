@@ -9,10 +9,8 @@ class that knows how to plot a single frame and load the required data.
 Installation
 ^^^^^^^^^^^^
 
-Requirements: numpy, scipy, matplotlib, h5py, and our PostCactus 
+Requirements: Python >=3.0 or 2.7, numpy, scipy, matplotlib, h5py, and our PostCactus 
 package. Only for 3D movies, also VTK.
-The current version still requires Python2.7, a Python3 port 
-is underway.
 
 
 The install uses the standard python way, e.g.,

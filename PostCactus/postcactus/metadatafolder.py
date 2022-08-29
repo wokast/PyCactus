@@ -2,12 +2,16 @@
 
 The metadata is stored as a folder containing .json files.
 """
+from __future__ import unicode_literals
+from builtins import str
+from builtins import object
+
 import os
 import collections
 import json
 
 def dict_to_ntup(d):
-  k = [k.encode('ascii') for k in d.keys()]
+  k = [str(k) for k in d.keys()]
   T = collections.namedtuple("MetaDataGroup", k)
   return T(**d)
 #
@@ -87,7 +91,7 @@ class MetaDataFolder(object):
   def __getitem__(self, name):
     try:
       d = getattr(self, name)
-    except Exception, inst:
+    except Exception as inst:
       raise KeyError(name)
     #
     return d
@@ -95,7 +99,7 @@ class MetaDataFolder(object):
   def __setitem__(self, name, value):
     try:
       setattr(self, name, value)
-    except Exception, inst:
+    except Exception as inst:
       raise KeyError(name)
     #
   #
@@ -103,7 +107,7 @@ class MetaDataFolder(object):
     try:
       self._legal_name(name)
       d = self._load_group(name)
-    except Exception, inst:
+    except Exception as inst:
       raise AttributeError(name)
     #
     self._cache_group(name, d)
@@ -114,7 +118,7 @@ class MetaDataFolder(object):
       self._legal_name(name)
       self._uncache_group(name) #for consistency
       self._save_group(name, value)
-    except Exception, inst:
+    except Exception as inst:
       raise AttributeError("can't set attribute (%s)" % inst)
     #
   #

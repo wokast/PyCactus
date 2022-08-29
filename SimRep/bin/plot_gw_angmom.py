@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
 
+from builtins import zip
 from simrep.stdplot import *
 
 def plot_torque(gwtrq, jtot, jcut, dist):
@@ -82,7 +84,7 @@ def load_data(sd, fcut):
   wcut      = 2*pi*fcut
   det       = sd.gwpsi4mp.outer_det
   jtot, jgw = det.get_total_angmom_z(wcut, ret_comps=True)
-  jgw       = sorted(jgw.items(), key=lambda x:-abs(x[1]))
+  jgw       = sorted(list(jgw.items()), key=lambda x:-abs(x[1]))
   gwtq      = [(l,m,j,det.get_torque_z(l,m,wcut)) for (l,m),j in jgw]
   return gwtq, jtot, det.dist
 #

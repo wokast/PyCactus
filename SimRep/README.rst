@@ -13,11 +13,9 @@ e.g. logfiles.
 Installation
 ^^^^^^^^^^^^
 
-Requirements: numpy, scipy, matplotlib, h5py, and our PostCactus 
+Requirements: Python >=3 or 2.7, numpy, scipy, matplotlib, h5py, and our PostCactus 
 package.
 
-The current version still requires Python2.7, a Python3 port 
-is underway.
 
 The install uses the standard python way, e.g.,
 `pip install <path to SimRep folder>`

@@ -2,6 +2,8 @@
 """This module provides functions to plot various Cactus data types,
 such as 2D :py:class:`~.RegData`, :py:class:`~.TimeSeries`.
 """
+from __future__ import division
+from builtins import zip
 
 import math
 import itertools
@@ -65,7 +67,7 @@ def canonic_plot_units(units):
   try:
     unit  = float(units)
     units = (unit, unit)
-  except TypeError, ValueError:
+  except TypeError as ValueError:
     units = [float(u) for u in units]
   #
   if (len(units) != 2):
@@ -100,7 +102,7 @@ def color_bar(image=None, cax=None, ax=None, label=None, ticks=None, **kwargs):
   #
   
   
-  vmin,vmax = cb.get_clim()
+  vmin,vmax = cb.mappable.get_clim()
   # work around one buggy matplotlib version
   if (ticks is None):
     if isinstance(cb.norm, matplotlib.colors.LogNorm):
@@ -577,7 +579,7 @@ def plot_grid_struct(data, units=1.0, axes=None, facecolor=None,
   eclrs   = itertools.cycle(edgecolor)
   fclrs   = itertools.cycle(facecolor)
 
-  for (lvl,boxes),eclr,fclr in itertools.izip(levels, eclrs, fclrs):
+  for (lvl,boxes),eclr,fclr in zip(levels, eclrs, fclrs):
     for x0,x1 in boxes:
       x0 = x0 / units
       x1 = x1 / units

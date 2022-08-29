@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+from builtins import str
+from builtins import object
 
 def entity(e):
   "Not intended to be used directly"
@@ -33,17 +36,17 @@ def entity_list(cont):
 #
 
 
-class DocEntity:
+class DocEntity(object):
   "Not intended to be used directly"
   def __init__(self, what, **items):
-    self.what   = what
+    self.what   = str(what)
     self.__dict__.update(items)
   #
 #
 
 def is_doc_entity(e, what):
   "Not intended to be used directly"
-  return (isinstance(e, DocEntity) and (e.what == what))
+  return (isinstance(e, DocEntity) and (e.what == str(what)))
 #
 
 def section(title, name, cont=[], subs=[]):
@@ -94,7 +97,7 @@ def table(cont, cap=None):
      is specified, else it will be a floating element with a caption. A table number 
      will be added automatically to the caption."""
   c = [[entity_list(e) for e in r] for r in cont]
-  b = cap if (cap==None) else entity_list(cap)
+  b = cap if (cap is None) else entity_list(cap)
   t = DocEntity('table', cont=c, cap=b)
   return t
 #
@@ -105,7 +108,7 @@ def figure(path, cap=None):
      automatically. If no caption is specified, the figure will be inserted in the text
      flow. Else, the figure will be a floating element with caption, and a figure number 
      is added automatically. """
-  c = cap if (cap==None) else entity_list(cap)
+  c = cap if (cap is None) else entity_list(cap)
   return DocEntity('figure', path=str(path), cap=c)
 #
 
@@ -114,7 +117,7 @@ def movie(path, cap=None):
      If no caption is specified, the movie will be inserted in the text
      flow. Else, the movie will be a floating element with caption.
   """
-  c = cap if (cap==None) else entity_list(cap)
+  c = cap if (cap is None) else entity_list(cap)
   return DocEntity('movie', path=str(path), cap=c)
 #
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from repplugin import *
+from __future__ import absolute_import
+from .repplugin import *
 import os
 
 def postprocess(datadir, simd, repdir):

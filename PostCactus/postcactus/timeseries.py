@@ -4,12 +4,17 @@ series with methods to compute derivatives and definite integrals,
 resample time series, in particular to regular time intervals, smooth 
 them, and combine overlapping time series into one.
 """
+from __future__ import division
+from builtins import object
 
-from numpy import *
-from scipy import *
+import numpy as np
+import scipy 
 from scipy import interpolate
-import scipy.integrate
+from scipy import integrate
 from scipy import ndimage
+
+import math
+from math import pi
 
 def spline_deriv_real(t, y, order):
   """Numerical differentiation of real valued data up to order 5 
@@ -120,14 +125,14 @@ def remove_phase_jump(phase):
   :rtype:           1D numpy array.
   """
   nph       = phase / (2*pi)
-  wind      = zeros_like(phase)
-  wind[1:]  = rint(nph[1:] - nph[:-1])
-  wind      = cumsum(wind)
+  wind      = np.zeros_like(phase)
+  wind[1:]  = np.rint(nph[1:] - nph[:-1])
+  wind      = np.cumsum(wind)
   return phase - (2*pi)*wind
 #
 
 
-class TimeSeries:
+class TimeSeries(object):
   """This class represents real or complex valued time series."""
   def __len__(self):
     """:returns: The number of sample points."""
@@ -152,7 +157,7 @@ class TimeSeries:
     return TimeSeries(self.t, self.y.imag)
   #
   def conjugate(self):
-    return TimeSeries(self.t, conjugate(self.y))
+    return TimeSeries(self.t, np.conjugate(self.y))
   #
   def __neg__(self):
     return TimeSeries(self.t, -self.y)
@@ -203,7 +208,7 @@ class TimeSeries:
     :returns: Resampled time series.
     :rtype:   :py:class:`~.TimeSeries`    
     """
-    tna     = array(tn)
+    tna     = np.array(tn)
     y       = spline_interpol(self.t, self.y, tna, ext=ext)
     if (len(tna)==1): y=[y]
     return TimeSeries(tna, y)
@@ -214,16 +219,16 @@ class TimeSeries:
     :returns: Regularly resampled time series.
     :rtype:   :py:class:`~.TimeSeries`
     """
-    t       = linspace(self.tmin(), self.tmax(), len(self))
+    t       = np.linspace(self.tmin(), self.tmax(), len(self))
     return self.resampled(t)
   #
   def resample_fixed_rate(self, rate):
     dt = 1.0 / float(rate)
     n  = int(floor(self.length() / dt))
-    tn = self.tmin() + arange(0,n) * dt
+    tn = self.tmin() + np.arange(0,n) * dt
     return self.resampled(tn)
   #
-  def smoothed(self, tsm, fwin=ones):
+  def smoothed(self, tsm, fwin=np.ones):
     """Smooth the data by convoluting with a window function.
     
     :param fwin: The window function.
@@ -240,11 +245,11 @@ class TimeSeries:
     rs      = self.regular_sample()
     w       = fwin(nw)
     w       = w / w.sum()
-    yc      = convolve(rs.y, w, 'valid')
+    yc      = np.convolve(rs.y, w, 'valid')
     tw      = (len(w)-1)*dt
     tmin    = rs.tmin() + 0.5*tw
     tmax    = rs.tmax() - 0.5*tw
-    tc      = linspace(tmin, tmax, len(yc))
+    tc      = np.linspace(tmin, tmax, len(yc))
     return TimeSeries(tc, yc)
   #
   def new_time_unit(self, utime):
@@ -262,8 +267,8 @@ class TimeSeries:
     :param y: Data samples, can be real or complex valued.
     :type y:  1D numpy array or list. 
     """
-    self.t      = array(t).copy()
-    self.y      = array(y).copy()
+    self.t      = np.array(t).copy()
+    self.y      = np.array(y).copy()
     if (len(self.t)>1):
       a = self.t[1:]-self.t[:-1]
       if (a.min()<0):
@@ -291,10 +296,10 @@ class TimeSeries:
     :param str fname: File name.
     """
     if self.is_complex():
-      savetxt(fname, transpose((self.t, self.y.real, self.y.imag)))
+      np.savetxt(fname, transpose((self.t, self.y.real, self.y.imag)))
     #
     else:
-      savetxt(fname, transpose((self.t, self.y)))
+      np.savetxt(fname, transpose((self.t, self.y)))
     #
   #
   def deriv(self, order):
@@ -326,13 +331,13 @@ class TimeSeries:
     return spline_integrate(self.t, self.y, a, b)
   #
   def integral(self, initial=0):
-    yn = scipy.integrate.cumtrapz(self.y, x=self.t, initial=0)
+    yn = integrate.cumtrapz(self.y, x=self.t, initial=0)
     return TimeSeries(self.t, yn+initial)
   #
   def smooth_deriv(self, order, fmax):
     fe = {0:1.0, 1:(5.307/5), 2:(7.376/5), 3:(8.695/5), 4:(10.226/5), 5:(11.4/5)}
     tsm = fe[order] / fmax
-    wf  = blackman
+    wf  = np.blackman
     if order<0:
       raise ValueError('Differentiation order < 0')
     #
@@ -355,7 +360,7 @@ class TimeSeries:
     :returns: Time series with finit values only.
     :rtype:   :py:class:`~.TimeSeries`
     """
-    msk = isfinite(self.y)
+    msk = np.isfinite(self.y)
     return TimeSeries(self.t[msk], self.y[msk])
   #
   def cont_phase(self):
@@ -366,7 +371,7 @@ class TimeSeries:
     :returns:   Continuous complex phase.
     :rtype:     :py:class:`~.TimeSeries`
     """
-    phase  = remove_phase_jump(angle(self.y))
+    phase  = remove_phase_jump(np.angle(self.y))
     return TimeSeries(self.t, phase)
   #  
   def phase_vel(self):
@@ -385,7 +390,7 @@ class TimeSeries:
     ys = ndimage.gaussian_filter1d(rs.y, sigma, order=deriv, 
                                    mode='nearest')
     ys = ys/(dt**deriv)
-    nb=int(ceil(2*sigma))
+    nb=int(math.ceil(2*sigma))
     return TimeSeries(rs.t[nb:-nb], ys[nb:-nb])
   #
   def phase_avg_vel(self, tavg):
@@ -418,8 +423,8 @@ def combine_ts_early(series):
   yn    = sser[0].y
   for s in sser[1:]:
     m   = s.t > tn[-1]
-    tn  = hstack([tn, s.t[m]])
-    yn  = hstack([yn, s.y[m]])
+    tn  = np.hstack([tn, s.t[m]])
+    yn  = np.hstack([yn, s.y[m]])
   #
   return TimeSeries(tn, yn)
 #
@@ -448,8 +453,8 @@ def combine_ts_late(series):
       yn += [yprev]
     #
   #
-  tn = hstack(list(reversed(tn)))
-  yn = hstack(list(reversed(yn)))
+  tn = np.hstack(list(reversed(tn)))
+  yn = np.hstack(list(reversed(yn)))
   return TimeSeries(tn, yn)
 #
 
@@ -483,7 +488,7 @@ def sample_common(ts):
   tmin  = max([s.tmin() for s in ts])
   tmax  = min([s.tmax() for s in ts])
   ns    = max([len(s) for s in ts])
-  t     = linspace(tmin, tmax, ns)
+  t     = np.linspace(tmin, tmax, ns)
   return [s.resampled(t) for s in ts]
 #
 
@@ -505,14 +510,14 @@ def instant_freq(signal, tsmooth0=None, tsmooth1=None):
   if tsmooth0 is None:
     smsig  = signal
   else:
-    smsig  = signal.smoothed(tsm=float(tsmooth0),fwin=hanning)
+    smsig  = signal.smoothed(tsm=float(tsmooth0),fwin=np.hanning)
   #
   dsig   = smsig.deriv(order=1)
   smsig  = smsig.resampled(dsig.t)
-  fi     = abs((dsig.y / (smsig.y * (2*pi))).imag)
+  fi     = np.abs((dsig.y / (smsig.y * (2*pi))).imag)
   finst  = TimeSeries(smsig.t, fi)
   if tsmooth1 is not None:
-    finst = finst.smoothed(tsm=float(tsmooth1), fwin=hanning)
+    finst = finst.smoothed(tsm=float(tsmooth1), fwin=np.hanning)
   #
   return finst
 #
@@ -528,8 +533,8 @@ def remove_duplicate_iters(t,y):
   :returns:  strictly monotonic time series.
   :rtype:    :py:class:`~.TimeSeries`
   """
-  t2    = minimum.accumulate(t[::-1])[::-1]
-  msk   = hstack((t[:-1]<t2[1:],[True]))
+  t2    = np.minimum.accumulate(t[::-1])[::-1]
+  msk   = np.hstack((t[:-1]<t2[1:],[True]))
   return TimeSeries(t[msk], y[msk])
 #
 

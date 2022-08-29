@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import map
+from builtins import range
 
 import math
 import numpy as np
-import timeseries
-from fourier_util import spec, planck_window
+from . import timeseries
+from .fourier_util import spec, planck_window
 
 def get_eff_strain(hp, hc, window=None):
   n    = len(hp.t)
@@ -101,11 +106,11 @@ def momentum_from_qlm(qeven, qodd):
   Im, Re    = np.imag, np.real
   sqrt      = math.sqrt
 
-  dt_qeven = {k:q.deriv(1) for k,q in qeven.iteritems()}
-  dt_qodd  = {k:q.deriv(1) for k,q in qodd.iteritems()}
-  time     = dt_qeven.values()[0].t
-  qeven    = {k:q.resampled(time) for k,q in qeven.iteritems()}
-  qodd     = {k:q.resampled(time) for k,q in qodd.iteritems()}
+  dt_qeven = {k:q.deriv(1) for k,q in qeven.items()}
+  dt_qodd  = {k:q.deriv(1) for k,q in qodd.items()}
+  time     = next(iter(dt_qeven.values())).t
+  qeven    = {k:q.resampled(time) for k,q in qeven.items()}
+  qodd     = {k:q.resampled(time) for k,q in qodd.items()}
   
   lmax     = max([l for l,m in qeven.keys()])
   
@@ -117,7 +122,7 @@ def momentum_from_qlm(qeven, qodd):
       #
       if (l,ma) not in d:
         if l <= lmax:
-          print "Warning: missing Q_l%d_m%d, assuming 0" % (l,m)
+          print("Warning: missing Q_l%d_m%d, assuming 0" % (l,m))
         #
         return 0.0
       #
@@ -126,7 +131,7 @@ def momentum_from_qlm(qeven, qodd):
         q = (-1)**ma * np.conj(q)
       #
       if not np.all(np.isfinite(q)):
-        print "Warning: Q_l%d_m%d contains NaNs, assuming 0" % (l,ma)
+        print("Warning: Q_l%d_m%d contains NaNs, assuming 0" % (l,ma))
         return 0.0
       #
       return q
@@ -183,7 +188,7 @@ def momentum_from_qlm(qeven, qodd):
   dt_py = Im(dt_pc)
   
   mkts = lambda d : timeseries.TimeSeries(time, d)
-  dt_p = map(mkts, [dt_px, dt_py, dt_pz])
+  dt_p = list(map(mkts, [dt_px, dt_py, dt_pz]))
   
   #amp = sorted(amp.items(), key= lambda x: -x[1])
   #for (l,m), a in amp:

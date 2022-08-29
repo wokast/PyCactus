@@ -2,10 +2,17 @@
 """This module provides functions to plot uniform 3D Cactus grid data
 using VTK.
 """
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import map
+from builtins import zip
+from builtins import range
+from builtins import object
 
 import numpy as np
 from matplotlib import pyplot 
-import viz_colors as colors 
+from . import viz_colors as colors 
 from postcactus import grid_data as gd
 import vtk
 from vtk.util import numpy_support
@@ -420,7 +427,7 @@ def mesh(x,y,z, rgb=None, color='g', normals=True, renderer=None):
 def tubes(curves, scalar=None, fixed_radius=None, color='r', cmap='afmhot', 
           vmin=None, vmax=None, radius=None, num_sides=10, 
           renderer=None):
-  numpts    = sum(map(lambda x:len(x[0]), curves))
+  numpts    = sum((len(x[0]) for x in curves))
   use_cmap  = scalar is not None
   vary_radius = radius is not None
   
@@ -529,7 +536,7 @@ def field_lines(curves, scalar=None, weight=None, wmin=0.1, wmax=1.0,
   #
   
   if cmap is None:
-    color = viz.color_to_rgb(color)
+    color = colors.to_rgb(color)
   else:
     if vmax is None:
       vmax = np.max([np.max(s) for s in scalar])
@@ -548,7 +555,7 @@ def field_lines(curves, scalar=None, weight=None, wmin=0.1, wmax=1.0,
     return tr
   #
   
-  crad = map(mkradius, curves)
+  crad = list(map(mkradius, curves))
   if weight is not None:
     for c,w in zip(crad,weight):
       c *= min(wmax, w)
@@ -715,7 +722,7 @@ def text(text, posx=0.1, posy=0.01, width=0.9, height=0.05, color='r',
 
 def show_ah_patches(ahp, color='r', renderer=None):
   color = colors.to_rgb(color)
-  for x,y,z in ahp.itervalues():
+  for x,y,z in ahp.values():
     mesh(x,y,z, color=color, renderer=renderer)
   #
 #
@@ -768,6 +775,9 @@ class RenderWindow(object):
     self.use_aa = bool(use_aa)
     self.all_renderers = []
     self.renderWin = vtk.vtkRenderWindow()
+    # ~ if num_aa is not None:
+      # ~ self.renderWin.SetAAFrames(num_aa)
+    # ~ #
     if renderer is not None:
       self.add_renderer(renderer)    
     #
@@ -797,11 +807,11 @@ class RenderWindow(object):
   def print_cams(self):
     for n,rd in enumerate(self.all_renderers):
       cr,cth,cphi,corig = get_camera(rd)
-      print "Camera %d settings:" %n
-      print "  focal point:     %s" % corig
-      print "  distance:        %s" % cr
-      print "  theta:           %s" % cth
-      print "  phi:             %s" % cphi
+      print("Camera %d settings:" %n)
+      print("  focal point:     %s" % corig)
+      print("  distance:        %s" % cr)
+      print("  theta:           %s" % cth)
+      print("  phi:             %s" % cphi)
     #
   #
   def show_interactive(self, screensh_file='screenshot'):

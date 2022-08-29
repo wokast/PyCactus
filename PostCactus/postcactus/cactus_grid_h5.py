@@ -1,3 +1,9 @@
+from __future__ import division
+from __future__ import absolute_import
+from builtins import str
+from builtins import zip
+from builtins import object
+
 import os
 import re
 import logging
@@ -5,7 +11,7 @@ from operator import itemgetter
 from bisect import bisect_right
 import h5py
 from postcactus import grid_data 
-from attr_dict import pythonize_name_dict
+from .attr_dict import pythonize_name_dict
 import numpy as np
 import math
 import gc
@@ -36,7 +42,7 @@ class GridSourceTOC(object):
     fr = self._frames.get(it)
     if fr is None: 
       return []
-    return fr.keys()
+    return list(fr.keys())
   #
   def get_level_comps(self, it, level):
     fr = self._frames.get(it)
@@ -77,7 +83,7 @@ class GridH5File(object):
     self._toc     = GridSourceTOC()
     tocvar        = None
     self._lama    = ''
-    for n in self._file.iterkeys():
+    for n in self._file.keys():
       m = self._parser.match(n)
       if not m:
         continue
@@ -203,8 +209,8 @@ class GridH5File(object):
       i1 = np.minimum(sh-1, np.ceil((xb1 - x0) / dx + bnd).astype(int))
       
       new_x0 = x0 + dx * i0
-      sl = tuple([slice(i,j+1) for i,j in reversed(zip(i0,i1))])
-      sh1 = [(j+1-i) for i,j in reversed(zip(i0,i1))]
+      sl = tuple([slice(i,j+1) for i,j in reversed(list(zip(i0,i1)))])
+      sh1 = [(j+1-i) for i,j in reversed(list(zip(i0,i1)))]
     #
     d  = self._dset_view(dset, sl, sh1, fill=fill)
     return grid_data.RegData(new_x0, dx, d, 
@@ -289,15 +295,16 @@ class GridVectorSource(object):
     #
     return grid_data.Vec([self._src.read(n, it, dest=dest.get(i), 
                                          **kwargs) 
-                          for i,n in cns.iteritems()])
+                          for i,n in cns.items()])
   #  
   def get_iters(self, name, vec_dims=None):
     cns = self._vec_comp_names(name, vec_dims)
     if cns is None:
       return np.array([], dtype=int)
     #
-    its = self._src.get_iters(cns.values()[0])
-    for n in cns.values()[1:]:
+    cns_val = list(cns.values())
+    its = self._src.get_iters(cns_val[0])
+    for n in cns_val[1:]:
       its = np.intersect1d(its, self._src.get_iters(n))
     #
     return its
@@ -307,7 +314,7 @@ class GridVectorSource(object):
     if cns is None:
       return np.array([], dtype=float)
     #
-    cns   = cns.values()
+    cns   = list(cns.values())
     its   = self._src.get_iters(cns[0])
     times = self._src.get_times(cns[0])
     for n in cns[1:]:
@@ -575,7 +582,7 @@ def read_whole_evol(src, name,
     every = np.diff(its).max()
   #
   if niter_max is not None:
-    m = (its[-1] - its[0]) / every
+    m = (its[-1] - its[0]) // every
     if m > niter_max:
       every *= 2**int(math.ceil((math.log(m)-math.log(niter_max))
                                    /math.log(2)))
@@ -645,17 +652,17 @@ class GridReader(object):
     self._iters     = {}
     self._times     = {}
     self._spacing   = {}
-    self.fields     = pythonize_name_dict(self._vars.keys(), 
+    self.fields     = pythonize_name_dict(list(self._vars.keys()), 
                         self.bind_field)
     self._vecsrc    = GridVectorSource(self)
     self._matsrc    = GridMatrixSource(self)
   #  
   def __str__(self):
     return "\nAvailable grid data of dimension %s: \n%s\n"\
-     % (self._dims, self._vars.keys())
+     % (self._dims, list(self._vars.keys()))
   #
   def _close_irrelevant(self, files, restart):
-    for rst, fl in files.iteritems():
+    for rst, fl in files.items():
       if rst != restart:
         for f in fl: 
           f.close()
@@ -781,7 +788,7 @@ class GridReader(object):
                                   symmetric=symmetric)
   #
   def all_fields(self):
-    return self._vars.keys()
+    return list(self._vars.keys())
   #
   def dimensionality(self):
     return self._dims
@@ -793,7 +800,7 @@ class GridReader(object):
       return rsts
     #
     files   = self._vars[name]
-    rsts    = [(fl[0].get_toc(), p) for p,fl in files.iteritems()]
+    rsts    = [(fl[0].get_toc(), p) for p,fl in files.items()]
     rsts    = [(f.it_min(), f.it_max(), p) for f,p in rsts]
     rsts.sort(key=lambda x:(x[0],-x[1]))
     
@@ -927,7 +934,7 @@ class GridReader(object):
       return 0
     #
     return sum(sum((f.filesize() for f in rst)) 
-                                  for rst in self._vars[name].values())
+                          for rst in self._vars[name].values())
   #
   def filesize(self):
     sizes = {n:self.filesize_var(n) for n in self._vars}

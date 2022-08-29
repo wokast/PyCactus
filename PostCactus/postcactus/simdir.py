@@ -5,16 +5,20 @@ A simulation directory is represented by an instance of the
 :py:class:`~.SimDir` class, which provides access to all supported
 data types.
 """
+from __future__ import absolute_import
+from builtins import str
+from builtins import filter
+from builtins import object
 
 import os
-import cactus_scalars
-import cactus_gwsignal
-import cactus_ah
-import cactus_parfile as cpar
-import cactus_multipoles
-import cactus_grid_omni
-import metadatafolder
-import cactus_timertree
+from . import cactus_scalars
+from . import cactus_gwsignal
+from . import cactus_ah
+from . import cactus_parfile as cpar
+from . import cactus_multipoles
+from . import cactus_grid_omni
+from . import metadatafolder
+from . import cactus_timertree
 
 
 def lazy_property(fn):
@@ -88,8 +92,8 @@ class SimDir(object):
         return
       #
       a = listdir(path)
-      f = filter(os.path.isfile, a)
-      d = filter(os.path.isdir, a)
+      f = list(filter(os.path.isfile, a))
+      d = list(filter(os.path.isdir, a))
       self.allfiles += f
       for p in d:
         if os.path.isdir(p) and (os.path.basename(p) not in excludes):
@@ -139,6 +143,7 @@ class SimDir(object):
     """
     self._sanitize_path(str(path))
     self._scan_folders(int(max_depth))
+    
   #
   @lazy_property
   def ts(self):

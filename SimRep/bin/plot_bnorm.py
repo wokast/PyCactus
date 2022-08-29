@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
+from __future__ import print_function
 
 from simrep.stdplot import *
 from postcactus.timeseries import TimeSeries
@@ -46,7 +48,7 @@ def main(opt, args):
     alld = [TimeSeries(s.t[::n], s.y[::n]) for s in alld]
   #
   if not all([isfinite(d.y) for d in alld if d]):
-    print "Warning: B_norm contains NANs"
+    print("Warning: B_norm contains NANs")
   #
   plot_bnorm(*alld)
   viz.savefig_multi(os.path.join(opt.figdir, opt.figname), opt.formats)

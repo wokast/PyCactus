@@ -2,7 +2,9 @@
 """This module contains classes that serve as base classes for movies based on
 VTK. Further it provides  functions adding common commandline options,
 e.g. colormap, to a parser.""" 
+from __future__ import division
 
+from builtins import object
 import math
 
 def vtk_options(parser, antialias=False, background_color='k',

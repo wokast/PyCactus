@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
+from builtins import object
 """
 This module provides a class Units representing unit sytems or unit 
 conversions. It also defines predefined unit sytems, as well as some 
 natural constants, all expressed in SI units.
 
 The predefined units are
-* MSOL_GEOM_UNITS  geometric units where the mass unit is 1 solar mass.
-* METER_GEOM_UNITS geometric units where the length unit is 1 meter.
+* CACTUS_UNITS geometric units where the mass unit is 1 solar mass.
+* PIZZA_UNITS  geometric units where the length unit is 1 meter.
 * CGS_UNITS    unit system based on centimeter, gram, second.
 * SI_UNITS     guess
 
@@ -30,11 +32,11 @@ The following natural constants are defined
 
 import math
 
-class Units:
+class Units(object):
   """Class representing unit conversion. Unit system is specified by 
   length, time, and mass units. From this, derived units are computed.
   There are two uses: specifying and absolute unit system by interpreting
-  the base units as given in SI units, or specifying nits transformation
+  the base units as given in SI units, or specifying unit transformation
   by interpreting the base units as given in another unit system.
   This is only by convention. It is up to the user to keep track of the 
   meaning. 
@@ -70,6 +72,7 @@ class Units:
     """
     return Units(self.length / base.length, self.time / base.time, self.mass/base.mass)
   #
+  __truediv__ = __div__ #for python3
 #
 
 # The following constants are all given in SI units
@@ -112,7 +115,7 @@ def geom_umass(umass):
 
 SI_UNITS      = Units(1.0,1.0,1.0)
 CGS_UNITS     = Units(1e-2, 1.0, 1e-3)
-MSOL_GEOM_UNITS  = geom_umass(M_SOL_SI)
-METER_GEOM_UNITS = geom_ulength(1.0)
+CACTUS_UNITS  = geom_umass(M_SOL_SI)
+PIZZA_UNITS   = geom_ulength(1.0)
 
 

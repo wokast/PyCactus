@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
 
 from simrep.stdplot import *
 
@@ -78,7 +79,7 @@ def load_data(sd, fcut):
   wcut      = 2*pi*fcut
   det       = sd.gwpsi4mp.outer_det
   etot, egw = det.get_total_energy(wcut, ret_comps=True)
-  egw       = sorted(egw.items(), key=lambda x:-x[1])
+  egw       = sorted(list(egw.items()), key=lambda x:-x[1])
   gwpw      = [(l,m,e,det.get_power(l,m,wcut)) for (l,m),e in egw]
   return gwpw, etot, det.dist
 #

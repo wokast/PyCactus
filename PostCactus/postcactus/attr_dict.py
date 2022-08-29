@@ -1,3 +1,4 @@
+from builtins import object
 import re
 
 class AttrDict(object):
@@ -5,13 +6,13 @@ class AttrDict(object):
     raise TypeError("Attributes are immutable")
   #
   def __init__(self, elements):
-		object.__setattr__(self, '_elem',  elements)
+    object.__setattr__(self, '_elem',  elements)
   #
   def __getattr__(self, name):
     return self._elem[name]
   #
   def __dir__(self):
-    return self._elem.keys() 
+    return list(self._elem.keys()) 
   #
 #
 
@@ -19,7 +20,7 @@ class AttrDict(object):
 class TransformDict(object):
   def __init__(self, elem, transf=lambda x:x):
     flt = lambda x: TransformDict(x, transf) if isinstance(x, dict) else x
-    self._elem    = {k:flt(v) for k,v in elem.iteritems()}
+    self._elem    = {k:flt(v) for k,v in elem.items()}
     self._transf  = transf
   #
   def __getitem__(self, name):
@@ -30,7 +31,7 @@ class TransformDict(object):
     return self._transf(e)
   #
   def keys(self):
-    return self._elem.keys()
+    return list(self._elem.keys())
   #
   def __contains__(self, name):
     return name in self._elem

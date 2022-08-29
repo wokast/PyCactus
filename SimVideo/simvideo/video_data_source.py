@@ -4,7 +4,10 @@ Mainly this includes adding common geometry option to an parser for the
 commandline arguments, and setting up datasource objects with geometry
 specified in options returned from the argument parser.
 """
-
+from __future__ import division
+from builtins import zip
+from builtins import map
+from builtins import object
 from postcactus import grid_data
 from postcactus import cactus_grid_h5 
 import numpy as np
@@ -88,31 +91,20 @@ def get_geometry_xz(sd, opt):
   return geom 
 #
 
-def get_reflection_sym(sd):
-  rdim = []
-  if 'reflectionsymmetry' in sd.initial_params:
-    dims = [(0,'reflection_x'), (1,'reflection_y'), (2, 'reflection_z')]
-    for k,kn in dims:
-      if kn in sd.initial_params.reflectionsymmetry:
-        if sd.initial_params.reflectionsymmetry.get_bool(kn):
-          rdim.append(k)
-        #
-      #
-    #
-  #
-  return rdim
-#
-
 def get_datasource_xz(sd, opt):
   geom = get_geometry_xz(sd, opt)
   dsrc = sd.grid.xz.bind_geom(geom, order=opt.order)
-  rdim = get_reflection_sym(sd)
-  if rdim:
-    dsrc = cactus_grid_h5.GridReaderUndoSymRefl(dsrc, rdim)
+  rdim = []
+  if 'reflectionsymmetry' in sd.initial_params:
+    if 'reflection_z' in sd.initial_params.reflectionsymmetry:
+      if sd.initial_params.reflectionsymmetry.get_bool('reflection_z'):
+        rdim = [2]
+      #
+    #
   #
+  dsrc = cactus_grid_h5.GridReaderUndoSymRefl(dsrc, rdim)
   return dsrc
 #
-
 
 class GridReaderMultiPlanes(object):
   def __init__(self, src):
@@ -122,13 +114,17 @@ class GridReaderMultiPlanes(object):
   def get_iters(self, name):
     its = [set(s.get_iters(name)) for s in self._src]
     cit = its[0]
-    map(cit.intersection_update, its[1:])
+    for i in its[1:]:
+      cit.intersection_update(i)
+    #
     return np.array(sorted(list(cit)))
   #
   def get_times(self, name):
     tms = [set(s.get_times(name)) for s in self._src]
     ctm = tms[0]
-    map(ctm.intersection_update, tms[1:])
+    for t in tms[1:]:
+      ctm.intersection_update(t)
+    #
     return np.array(sorted(list(ctm)))
   #
   def sources(self):
@@ -203,9 +199,10 @@ def get_geometry_xyz(sd, opt):
 def get_datasource_xyz(sd, opt):
   geom = get_geometry_xyz(sd, opt)
   dsrc = sd.grid.xyz.bind_geom(geom, order=opt.order)
-  rdim = get_reflection_sym(sd)
-  if rdim:
-    dsrc = cactus_grid_h5.GridReaderUndoSymRefl(dsrc, rdim)
+  if 'reflectionsymmetry' in sd.initial_params:
+    if 'reflection_z' in sd.initial_params.reflectionsymmetry:
+      if sd.initial_params.reflectionsymmetry.get_bool('reflection_z'):
+        dsrc = cactus_grid_h5.GridReaderUndoSymRefl(dsrc, [2])
   #
   return dsrc
 #

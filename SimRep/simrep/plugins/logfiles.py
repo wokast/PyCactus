@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from repplugin import *
+from __future__ import absolute_import
+from builtins import map
+from builtins import str
+from .repplugin import *
 import os
 from postcactus import cactus_parfile 
 
@@ -22,7 +25,7 @@ def get_log(path, maxlines, alarming=['Warning', 'Error', 'NAN', 'INF']):
 def format_param(p):
   if isinstance(p, cactus_parfile.ArrayParam):
     fmt = lambda e : [("[%d] = " % e[0]), str(e[1]), newline()] 
-    return map(fmt, p.items())
+    return list(map(fmt, list(p.items())))
   #
   if isinstance(p, cactus_parfile.SetParam):
     return [[nobreak(s), newline()] for s in sorted(p)]

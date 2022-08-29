@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import division
+from __future__ import print_function
+
+from builtins import str
 import os
 import sys
 from optparse import OptionParser
@@ -13,6 +17,10 @@ from matplotlib.ticker import AutoMinorLocator
 import postcactus.visualize as viz
 from postcactus.visualize import savefig_multi as multi_savefig
 
+CU     = unitconv.CACTUS_UNITS
+cu_km  = 1e3  / CU.length
+cu_ms  = 1e-3 / CU.time
+cu_kHz = 1e3  / CU.freq
 
 def std_plot_parser_options(parser, figname):
   parser.add_option('--datadir', default='.', help="Data directory")
@@ -65,11 +73,11 @@ def try_execute(parser, mainf):
   else:
     try:
       mainf(opt, args)
-    except Exception,inst:
-      print 'Failed (',inst,').'
+    except Exception as inst:
+      print('Failed (',inst,').')
       sys.exit(1)
     except:
-      print 'Failed mysteriously.'
+      print('Failed mysteriously.')
       sys.exit(1)
     #
   #

@@ -13,6 +13,11 @@ The important classes defined here are
  * :py:class:`~.Vec`        represents a generic vector
  * :py:class:`~.Mat`        represents a generic matrix
 """
+from __future__ import division
+from builtins import str
+from builtins import zip
+from builtins import range
+from builtins import object
 
 import bisect
 from numpy import *
@@ -48,7 +53,7 @@ ndimage_affine_transform = get_correct_affine_transform()
 
 
 
-class RegGeom:
+class RegGeom(object):
   """Describes the geometry of a regular rectangular dataset, as well as 
   information needed if part of refined grid hierachy, namely component
   number and refinement level. Also stores the number of ghost zones, 
@@ -277,7 +282,7 @@ class RegGeom:
     :returns: The coordinate array of each dimension.
     :rtype:   list of 1d numpy arrays
     """
-    a = zip(self.shape(), self.x0(), self.x1())
+    a = list(zip(self.shape(), self.x0(), self.x1()))
     c = [linspace(x0, x1, n) for n,x0,x1 in a]
     return c
   #
@@ -368,7 +373,7 @@ def snap_spacing_to_finer_reflvl(geom, dxc, max_lvl=None):
                            time=geom.time, iteration=geom.iteration)
 #
   
-class RegDataSpline:
+class RegDataSpline(object):
   """This class represents RegData as a function, using
   spline interpolation. The spline coefficients are computed
   only once, making repeated use *much* faster. 
@@ -574,7 +579,7 @@ class RegData(RegGeom):
     hst,hb = self.histogram(vmin=vmin, vmax=vmax, nbins=nbins, weights=weights)
     hc  = np.cumsum(hst) 
     if relative:
-      hc  /= hc[-1]
+      hc  = hc / hc[-1]
     #
     hb  = hb[1:]
     fr  = np.minimum(hc[-1], np.array(fractions))
@@ -598,7 +603,7 @@ class RegData(RegGeom):
     def sl(i0,i1):
       s       = [slice(None) for x in self.data.shape]
       s[dim]  = slice(i0,i1)
-      return s
+      return tuple(s)
     #
     
     if ((dim<0) or (dim>=self.num_dims())):
@@ -1025,8 +1030,10 @@ class RegData(RegGeom):
     return self.apply_binary(b, self, multiply)
   def __div__(self, b):
     return self.apply_binary(self, b, divide)
+  __truediv__ = __div__ #for python3
   def __rdiv__(self,b):
     return self.apply_binary(b, self, divide)
+  __rtruediv__ = __rdiv__
   def __pow__(self, b):
     return self.apply_binary(self, b, power)
   def __rpow__(self, b):
@@ -1052,6 +1059,7 @@ class RegData(RegGeom):
     self.data /= self.strip(b)
     return self
   #
+  __itruediv__ = __idiv__
   def atan2(self, b):
     """
     :returns: arc tangens
@@ -1120,7 +1128,7 @@ def merge_data_simple(alldat):
     i0      = ((d.x0()-mg.x0())/mg.dx() + 0.5).astype(int32)
     i1      = i0 + d.shape()
     i       = [slice(j0,j1) for j0,j1 in zip(i0,i1)]
-    data[i] = d.data
+    data[tuple(i)] = d.data
   #
   return RegData(mg.x0(),mg.dx(),data, reflevel=alldat[0].reflevel(), component=-1)
 #
@@ -1156,7 +1164,7 @@ def sample(func, x0, x1, shape):
 #
 
 
-class BrickCoords:
+class BrickCoords(object):
   """This class is not intended for direct use"""
   def int_to_coord(self, i):
     return np.array(i) * self.dx + self.ofs
@@ -1242,7 +1250,7 @@ class BrickCoords:
   #
 #
 
-class CompData:
+class CompData(object):
   """Composite data consisting of one or more regular datasets with 
   different grid spacings, i.e. a mesh refinement hirachy. The grid 
   spacings should differ by powers of two. Origins of the components 
@@ -1273,7 +1281,7 @@ class CompData:
       self.__lvl.setdefault(e.reflevel(),[]).append(e)
     #
     self.__lvlgeom = {l:merge_geom(el) 
-                      for l,el in self.__lvl.iteritems()}
+                      for l,el in self.__lvl.items()}
     self.__finest  = max(self.__lvl.keys())
     self.__edims          = self.__elements[0].dim_ext()
     self.__num_dims       = self.__elements[0].num_dims()
@@ -1715,8 +1723,10 @@ class CompData:
     return self.apply_binary(b, self, multiply)
   def __div__(self, b):
     return self.apply_binary(self, b, divide)
+  __truediv__ = __div__ #for python3
   def __rdiv__(self,b):
     return self.apply_binary(b, self, divide)
+  __rtruediv__ = __rdiv__ #for python3
   def __pow__(self, b):
     return self.apply_binary(self, b, power)
   def __rpow__(self, b):
@@ -1914,19 +1924,19 @@ def mat_op_mat(a,op,b):
   """internal helper function."""
   if a.size()!=b.size():
     raise ValueError('Size mismatch')
-  r=[range(0,s) for s in a.size()]
+  r=[list(range(0,s)) for s in a.size()]
   e=[[op(a[i,j],b[i,j]) for j in r[1]] for i in r[0]]
   return Mat(e)
 #
 
 def mat_op_scalar(a,op,b):
   """internal helper function."""
-  r=[range(0,s) for s in a.size()]
+  r=[list(range(0,s)) for s in a.size()]
   e=[[op(a[i,j],b) for j in r[1]] for i in r[0]]
   return Mat(e)
 #
 
-class Vec:
+class Vec(object):
   """A fixed size mathematical vector of arbitrary type. Intended to be used
   as a vector of RegData or CompData objects.
   """
@@ -1969,8 +1979,9 @@ class Vec:
   def __div__(self,b):
     if isinstance(b,Mat) or isinstance(b,Vec):
       return NotImplemented
-    return vec_op_scalar(self,opf.div,b)
+    return vec_op_scalar(self,opf.truediv,b)
   #
+  __truediv__ = __div__ #for python3
   def __rmul__(self,b):
     if isinstance(b,Mat) or isinstance(b,Vec):
       return NotImplemented
@@ -1984,7 +1995,7 @@ class Vec:
   #
 #
 
-class Mat:
+class Mat(object):
   """A fixed size matrix of arbitrary type. Intended to be used as a matrix
   of RegData or CompData elements.
   """
@@ -2021,8 +2032,9 @@ class Mat:
   def __div__(self,b):
     if isinstance(b,Mat) or isinstance(b,Vec):
       return NotImplemented
-    return mat_op_scalar(self,opf.div,b)
+    return mat_op_scalar(self,opf.truediv,b)
   #
+  __truediv__ = __div__ #for python3
   def __rmul__(self,b):
     if isinstance(b,Mat) or isinstance(b,Vec):
       return NotImplemented

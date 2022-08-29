@@ -1,8 +1,13 @@
+from __future__ import division
+
+from builtins import str
+from builtins import zip
+from builtins import object
 import os
 import re
 from operator import itemgetter
 from bisect import bisect_right
-from itertools import izip
+
 from postcactus import grid_data 
 import postcactus.cactus_grid_h5 as cgr
 import numpy as np
@@ -75,7 +80,7 @@ class GridASCIIFile(object):
     #
     toc.finalize()
     self._toc    = toc
-    self._times  = dict(izip(iters, times))
+    self._times  = dict(zip(iters, times))
     self._comps  = comps
   #
   def get_toc(self):
@@ -136,7 +141,7 @@ class GridASCIIFile(object):
     if s is None: return None
     s = s.get(lvl)
     if s is None: return None
-    s = s.values()
+    s = list(s.values())
     if not s: return None
     return s[0].dx()
   #

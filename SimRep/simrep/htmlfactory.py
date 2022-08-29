@@ -1,24 +1,25 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from builtins import str
+from builtins import object
+from html import escape
 
-import cgi
-from cgi import escape
-
-class Tag:
+class Tag(object):
   def __init__(self, cont, typ, attr):
     self.cont = cont
-    self.attr   = attr.items()
+    self.attr   = list(attr.items())
     self.typ    = typ.lower()
   #
   def __str__(self):
     attr = ''.join([(" %s=\"%s\"" % (k,v)) for k,v in self.attr])
-    if (self.cont == None):
+    if (self.cont is None):
       return ("<%s%s>" % (self.typ, attr))
     c = rendertags(self.cont)
     return "<%s%s>\n%s\n</%s>" % (self.typ, attr, c, self.typ)
   #
 #
 
-class RawHTML:
+class RawHTML(object):
   def __init__(self, cont):
     self.cont = str(cont)
   #
@@ -31,7 +32,7 @@ def rendertags(cont):
   if (isinstance(cont, list)):
     return '\n'.join([rendertags(c) for c in cont])
   if (isinstance(cont, str)):
-    return cgi.escape(cont)
+    return escape(cont)
   if (isinstance(cont, Tag) or isinstance(cont, RawHTML)):
     return str(cont)
   raise ValueError('Corrupted tag-tree contains unknown element.')
@@ -55,7 +56,7 @@ def body(cont, **attr):
 
 def header(cssfile=None):
   h  = etag('meta http-equiv="Content-Type"', content="text/html; charset=utf-8")
-  if (cssfile != None):
+  if (cssfile is not None):
     css   = etag('link', rel="stylesheet", type="text/css", href=cssfile)
     h=[css, h]
   #
@@ -87,7 +88,7 @@ def strong(cont, **attr):
 
 
 def nobreak(cont):
-  return rawhtml(cgi.escape(str(cont)).replace(' ','&nbsp;'))
+  return rawhtml(escape(str(cont)).replace(' ','&nbsp;'))
 #
 
 def newline():
@@ -111,14 +112,14 @@ def link(display, href, **attr):
 #
 
 def svg(src, alt, width=None, **attr):
-  sty = ("width:%s;" % width) if (width != None) else ''
+  sty = ("width:%s;" % width) if (width is not None) else ''
   return tag('', 'object', data=src, Type="image/svg+xml", name=alt, style=sty, **attr)
 #
 
 def img(src, alt, width=None, **attr):
   #if (src[-4:].lower()=='.svg'):
   #  return svg(src, alt, width, **attr)
-  sty = ("width:%s;" % width) if (width != None) else ''
+  sty = ("width:%s;" % width) if (width is not None) else ''
   return etag('img', src=src, alt=alt, style=sty, **attr)
 #
 
@@ -137,7 +138,7 @@ def table(cont, cap=None, **attr):
   body = [[tag(e, 'td') for e in r] for r in cont[1:]]
   rows = [head] + body
   tab  = [tag(r, 'tr') for r in rows]
-  if (cap == None):
+  if (cap is None):
     return tag(tab, 'table', **attr)
   capt = tag(cap, 'caption')
   return tag([capt, tab], 'table', **attr)

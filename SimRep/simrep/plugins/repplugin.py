@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+from builtins import str
 import os
 import sys
 import glob
@@ -13,10 +15,10 @@ def script(sn, *args, **kwargs):
   scr     = os.path.abspath(os.path.join(scrpath, sn))
   args2   = ['--'+x+'='+str(kwargs[x]) for x in kwargs] 
   cmd     = "%s %s %s" % (scr, ' '.join(args), ' '.join(args2))
-  print "executing script", sn
+  print("executing script", sn)
   success  = (os.WEXITSTATUS(os.system(cmd)) == 0)
   if not success:
-    print "Script %s failed." % sn
+    print("Script %s failed." % sn)
   #
   return success
 #

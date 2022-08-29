@@ -4,11 +4,16 @@ gravitational wave signals computed by various CACTUS thorns using either
 the Moncrief formalism or the Weyl scalar. For both, GW strain and 
 spectrum can be computed.
 """
+from __future__ import absolute_import
+from builtins import map
+from builtins import zip
+from builtins import range
+from builtins import object
 
 import os
-import timeseries
+from . import timeseries
 import numpy
-import gw_utils
+from . import gw_utils
 import math
 import warnings
 
@@ -110,7 +115,7 @@ class CactusGWMoncrief(object):
       k   = (d,l,m,p)
       alldat.setdefault(k, {})[(eo,ri)] = f
     #
-    alldat  = [(k, fl) for k,fl in alldat.iteritems() if len(fl)==4]
+    alldat  = [(k, fl) for k,fl in alldat.items() if len(fl)==4]
     self.available_l    = sorted(list(set((d[1] for d,fl in alldat))))
     self.available_m    = sorted(list(set((d[2] for d,fl in alldat))))
     
@@ -118,7 +123,7 @@ class CactusGWMoncrief(object):
     for (d,l,m,p),fl in alldat:
       dets.setdefault(d, {}).setdefault((l,m), []).append(fl)
     #
-    self._dets = {d:GWMoncriefDet(d,comps) for d,comps in dets.iteritems()}
+    self._dets = {d:GWMoncriefDet(d,comps) for d,comps in dets.items()}
     self.available_dist = sorted(self._dets.keys()) 
     if self.available_dist:
       self.outermost      = self.available_dist[-1] 
@@ -272,9 +277,8 @@ class GWPsi4Det(object):
   #
   def get_strain(self, l, m, w0, taper=False, cut=False):
     r"""Compute the GW strain components multiplied by the extraction 
-    radius. The strain is extracted from the Weyl Scalar at fixed radius,
-    without extrapolation to infinity, using the
-    formula 
+    radius. The strain is extracted from the Weyl Scalar using the
+    formula (see [NaHe2015]_)
     
     .. math::
     
@@ -282,7 +286,6 @@ class GWPsi4Det(object):
        - i h_\times^{lm}(r,t) = \int_{-\infty}^t \mathrm{d}u 
                   \int_{-\infty}^u \mathrm{d}v\, \Psi_4^{lm}(r,v)
        
-    For details, see [NaHe2015]_.
     The time integration is carried out using the fixed frequency 
     integration method described in  [RePo2011]_. 
     
@@ -602,7 +605,7 @@ class CactusGWPsi4MP(object):
       self.outermost      = None
       self.outer_det      = None
     #
-    for mp in self._mppsi4.itervalues():
+    for mp in self._mppsi4.values():
       self.available_lm.update(mp.available_lm)
     #
     self.available_l    = sorted(set([l for l,m in self.available_lm]))
@@ -632,7 +635,7 @@ class CactusGWPsi4MP(object):
   def __str__(self):
     s = ["Extraction radii = %s" % self.available_dist,
          "Available components up to l=%d" % self.l_max,'']
-    s += map(str, self)
+    s += list(map(str, self))
     return "\n".join(s)
   #
   def get_psi4(self, l, m, dist):

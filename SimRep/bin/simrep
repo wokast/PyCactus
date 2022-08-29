@@ -6,6 +6,10 @@ describing documents collecting the results, using a simple Python
 framework.
 """
 
+from __future__ import unicode_literals
+from __future__ import print_function
+from builtins import str
+
 import sys
 import os
 import pkgutil
@@ -44,9 +48,9 @@ def main(datadir, repdir, skip_post, repmodules):
       try:
         m.postprocess(ddir, sdir, rdir)
         msuc.append(m)
-      except Exception,inst:
-        print 'Postprocessing failed (',inst,')'
-        print 'Skipping module', mname
+      except Exception as inst:
+        print('Postprocessing failed (',inst,')')
+        print('Skipping module', mname)
       #  
     #
   #
@@ -60,13 +64,13 @@ def main(datadir, repdir, skip_post, repmodules):
         raise RuntimeError("Error: plugin did not return a document section")
       #
       rep.append(r)
-    except Exception,inst:
-      print 'Generating report failed (',inst,')'
-      print 'Skipping module', mname
+    except Exception as inst:
+      print('Generating report failed (',inst,')')
+      print('Skipping module', mname)
     #
   #
   try:
-    print "\nCreating HTML"
+    print("\nCreating HTML")
 
     if not rep:
       raise RuntimeError('No content')
@@ -74,8 +78,8 @@ def main(datadir, repdir, skip_post, repmodules):
     rep = pydocu.simreport("Simulation report","sim", rep)
   
     rephtml.render(rep, rdir)
-  except Exception,inst:
-    print 'Creating HTML failed (',inst,'), aborting'
+  except Exception as inst:
+    print('Creating HTML failed (',inst,'), aborting')
   #
 #
     

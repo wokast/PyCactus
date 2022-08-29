@@ -23,6 +23,10 @@ Usage example: ::
   >>>print p.active_thorns()
   set(['symbase', 'coordbase'])
 """
+from __future__ import print_function
+from builtins import map
+from builtins import str
+from builtins import object
 
 import re
 
@@ -78,7 +82,7 @@ class ArrayParam(object):
   #
   def __setitem__(self, key, value):
     k = int(key)
-    if self._dict.has_key(k):
+    if k in self._dict:
       raise RuntimeError("Duplicate definition of array parameter element %d" % k)
     #
     self._dict[k] = cactus_format_value(value)
@@ -93,13 +97,13 @@ class ArrayParam(object):
     return len(self._dict)
   #
   def items(self):
-    return self._dict.items()
+    return list(self._dict.items())
   #
   def __contains__(self, key):
-    return self.has_key(key)
+    return int(key) in self._dict
   #
   def has_key(self, key):
-    return self._dict.has_key(int(key))
+    return int(key) in self
   #
   def __str__(self):
     l = [("[%d] = %s" % (k,v)) for k,v in self.items()]
@@ -185,7 +189,7 @@ class Thorn(object):
   #
   def add_par_raw(self, name, value):
     n = name.lower()
-    if self._params.has_key(n):
+    if n in self._params:
       raise RuntimeError("Parameter %s was already set" % n)
     #
     self._params[n] = value
@@ -249,12 +253,13 @@ class Thorn(object):
     return self[name]
   #
   def __dir__(self):
-    return self._params.keys() #+ Thorn.__dict__.keys() + self.__dict__.keys()
+    return list(self._params.keys()) 
+    #+ Thorn.__dict__.keys() + self.__dict__.keys()
   #
 
   def __getitem__(self, name):
     n = name.lower()
-    if (not self._params.has_key(n)):
+    if (n not in self._params):
       raise KeyError("Parameter %s not set." % name)
     #
     return self._params[n]  
@@ -325,14 +330,15 @@ class Parfile(object):
   #
   def __getitem__(self, name):
     n = name.lower()
-    if self._thorns.has_key(n):
+    if n in self._thorns:
       return self._thorns[n]
     t = Thorn(n)
     self._thorns[n] = t
     return t
   #
   def __dir__(self):
-    return self._thorns.keys() #+ Parfile.__dict__.keys() + self.__dict__.keys()
+    return list(self._thorns.keys()) 
+    #+ Parfile.__dict__.keys() + self.__dict__.keys()
   #
   def __getattr__(self, name):
     if (not self.is_thorn_name_legal(name)):
@@ -382,8 +388,8 @@ def par_to_varlist(v):
   pat   =  re.compile(r'([^\s=:"\'#!\]\[{}]+)::([^\s=:"\'#!\]\[{}]+)(\[[\t ]*[\d]+[\t ]*\])?([\t ]*\{(?:[^{}#!]|(?:\{[^{}#!]+\}))+\})?', re.MULTILINE)
   res   = re.sub(pat, '', s).strip()
   if (len(res)>0):
-    print s
-    print repr(res)
+    print(s)
+    print(repr(res))
     raise ValueError("Cannot convert parameter to CACTUS variable list.")
   #
   l     = [(t.lower(),p.lower(),i,o) 
@@ -468,7 +474,7 @@ def load_parfile(path, parse_varlists=True, guess_types=False):
 
 
   p = Parfile()
-  with file(path,'r') as f:
+  with open(path,'r') as f:
     fs = f.read()
     fs = re.sub(cmt_pat, '', fs)
 
@@ -484,8 +490,8 @@ def load_parfile(path, parse_varlists=True, guess_types=False):
     fs      = re.sub(par_pat, '', fs).strip()
 
     if (len(fs)>0):
-      print "Warning: unparsed parfile content"
-      print fs
+      print("Warning: unparsed parfile content")
+      print(fs)
     #
 
     for thorn, param, value in pstr:

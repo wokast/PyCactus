@@ -5,15 +5,22 @@ is normally not used directly, but from the :py:mod:`~.simdir` module.
 The data loaded by this module is represented as 
 :py:class:`~.TimeSeries` objects.
 """
+from __future__ import absolute_import
+from builtins import str
+from builtins import next
+from builtins import filter
+from builtins import map
+from builtins import range
+from builtins import object
 
 import os
 import gzip
 import bz2
 import re
-from itertools import imap, ifilter
-import timeseries
+
+from . import timeseries
 import numpy
-from attr_dict import pythonize_name_dict
+from .attr_dict import pythonize_name_dict
 
 
 def load_cactus_scalar(fname):
@@ -55,7 +62,7 @@ def save_cactus_0d(fname, t, y):
 #
 
 
-class CactusScalarASCII:
+class CactusScalarASCII(object):
   _pat_fn = re.compile("^(\w+)((-(\w+))|(\[\d+\]))?\.(minimum|maximum|norm1|norm2|norm_inf|average)?\.asc(\.(gz|bz2))?$")
   _rtypes={'minimum':'min', 'maximum':'max', 'norm1':'norm1', 
           'norm2':'norm2', 'norm_inf':'infnorm', 'average':'average',
@@ -95,11 +102,11 @@ class CactusScalarASCII:
     with dcp(self.path) as f:
       hdr = [f.readline() for i in range(20)]
       if self.reduction_type == 'scalar':  
-        m = next(ifilter(bool, imap(self._pat_cf.match, hdr)), None) 
+        m = next(filter(bool, map(self._pat_cf.match, hdr)), None) 
         if m is None: 
           raise RuntimeError("CactusScalarASCII: bad header (missing column format)")
         #
-        cols = map(self._pat_col.match, m.groups()[0].split()) 
+        cols = list(map(self._pat_col.match, m.groups()[0].split())) 
         if not all(cols):
           raise RuntimeError("CactusScalarASCII: bad header") 
         # 
@@ -125,11 +132,11 @@ class CactusScalarASCII:
       #
       
       if self._one_per_grp:
-        m = next(ifilter(bool, imap(self._pat_dc.match, hdr)), None) 
+        m = next(filter(bool, map(self._pat_dc.match, hdr)), None) 
         if m is None: 
           raise RuntimeError("CactusScalarASCII: bad header (missing data columns)")
         #
-        cols = map(self._pat_col.match, m.groups()[0].split()) 
+        cols = list(map(self._pat_col.match, m.groups()[0].split())) 
         if not all(cols):
           raise RuntimeError("CactusScalarASCII: bad header") 
         # 
@@ -139,7 +146,7 @@ class CactusScalarASCII:
         #
         self._vars.update(colsd)
       else:
-        self._vars = {self._vars.keys()[0]:data_col}
+        self._vars = {next(iter(self._vars)):data_col}
       #
     #
     self._hdr_scanned = True
@@ -165,12 +172,12 @@ class CactusScalarASCII:
     return key in self._vars
   #
   def keys(self):
-    return self._vars.keys()
+    return list(self._vars.keys())
   #
 #
         
     
-class ScalarReader:
+class ScalarReader(object):
   """Helper class to read various types of scalar data. Not intended
   for direct use.
   """
@@ -189,18 +196,18 @@ class ScalarReader:
         pass
       #
     #   
-    self.fields = pythonize_name_dict(self.keys(), self.__getitem__) 
+    self.fields = pythonize_name_dict(list(self.keys()), self.__getitem__) 
   #
   def __getitem__(self,key):
     rest    = self._vars[key]
-    series  = [f.load(key) for f in rest.itervalues()]
+    series  = [f.load(key) for f in rest.values()]
     return timeseries.combine_ts(series)
   #
   def __contains__(self, key):
     return key in self._vars
   #
   def keys(self):
-    return self._vars.keys()
+    return list(self._vars.keys())
   #
   def get(self, key, default=None):
     """Get variable if available, else return a default value."""
@@ -210,11 +217,11 @@ class ScalarReader:
     return default
   #
   def __str__(self):
-    return "\nAvailable %s timeseries:\n%s\n" % (self.kind, self.keys())
+    return "\nAvailable %s timeseries:\n%s\n" % (self.kind, list(self.keys()))
   #
 #
 
-class NormInfOmniReader:
+class NormInfOmniReader(object):
   """Helper class to transparently get inf norm either from saved
   inf norm if available or else from min and max norms, if available.
   Not intended for direct use.
@@ -228,7 +235,7 @@ class NormInfOmniReader:
     kmax            = set(src_max.keys())
     kd              = kmin.intersection(kmax)
     self._keys.update(kd)
-    self.fields = pythonize_name_dict(self.keys(), self.__getitem__)
+    self.fields = pythonize_name_dict(list(self.keys()), self.__getitem__)
   #
   def __getitem__(self, key):
     if key in self._src_inf: 
@@ -252,13 +259,13 @@ class NormInfOmniReader:
     return default
   #
   def __str__(self):
-    return "\nAvailable Infnorm  timeseries: \n%s\n" % self.keys()
+    return "\nAvailable Infnorm  timeseries: \n%s\n" % list(self.keys())
   #
 #
 
 
 
-class IntegralsReader:
+class IntegralsReader(object):
   """Helper class to convert norms to integrals using grid volume
   saved by volomnia thorn. Not intended for direct use.
   """
@@ -268,7 +275,7 @@ class IntegralsReader:
     if self.volume is not None:
       self.volume     = self.volume.y[0]
     #
-    self.fields = pythonize_name_dict(self.keys(), self.__getitem__)
+    self.fields = pythonize_name_dict(list(self.keys()), self.__getitem__)
   #    
   def __getitem__(self, key):
     if (self.volume is None) or (key not in self._src_norm):
@@ -286,7 +293,7 @@ class IntegralsReader:
   def keys(self):
     if self.volume is None:
       return []
-    return self._src_norm.keys()
+    return list(self._src_norm.keys())
   #
   def get(self, key, default=None):
     """Get variable if available, else return a default value."""
@@ -296,7 +303,7 @@ class IntegralsReader:
     return default
   #
   def __str__(self):
-    return "\nAvailable Infnorm  timeseries: \n%s\n" % self.keys()
+    return "\nAvailable Infnorm  timeseries: \n%s\n" % list(self.keys())
   #
 #
 
@@ -307,13 +314,13 @@ class ScalarsDir(object):
   The different scalars are available as attributes:
   
   :ivar scalar:    access to grid scalars.
-  :ivar ~.min:       access to minimum reduction.
-  :ivar ~.max:       access to maximum reduction.
+  :ivar min:       access to minimum reduction.
+  :ivar max:       access to maximum reduction.
   :ivar norm1:     access to norm1 reduction.
   :ivar norm2:     access to norm2 reduction.
   :ivar average:   access to average reduction.
   :ivar infnorm:   access to inf-norm reduction.
-  :ivar ~.integral:  access to integral over coordinate volume.
+  :ivar integral:  access to integral over coordinate volume.
   :ivar absint:    access to integral of modulus.
   
   Each of those works as a dictionary mapping variable names to 

@@ -4,12 +4,17 @@ information about apparent horizons from various thorns. The main class
 is :py:class:`~.CactusAH` which collects all available data from a 
 simulation.
 """
+from __future__ import division
+from __future__ import absolute_import
 
+from builtins import str
+from builtins import map
+from builtins import object
 import os
 import re
 from scipy import interpolate
 import numpy
-import timeseries as ts
+from . import timeseries as ts
 
 class IsolatedHorizon(object):
   """This class represents properties of an apparent horizon 
@@ -320,7 +325,7 @@ class BHShape(object):
         #
       #
     #
-    self._files     = sorted(files.items(), key=lambda x : x[0])
+    self._files     = sorted(list(files.items()), key=lambda x : x[0])
     self.available  = (len(self._files) >= 2)
   #
   def _closest_iter(self, it, tol=None):
@@ -393,7 +398,7 @@ class BHShape(object):
     dim0,dim1 = {0:(1,2), 1:(0,2), 2:(0,1)}[dim]
     p0,p1 = [],[]
     
-    for p in patches.itervalues():
+    for p in patches.values():
       c3,c0,c1 = p[dim], p[dim0], p[dim1]
       size = numpy.max(c0) - numpy.min(c0)
       p0.append(c0[abs(c3-orig[dim]) < 1e-10 * size])
@@ -466,7 +471,7 @@ class BHShape(object):
           if (len(c) != 6):
             raise RuntimeError("corrupt AH shape file %s" % ahfile)
           #
-          c = map(float, c[3:])
+          c = list(map(float, c[3:]))
           lcol.append(c)
         #
       #
@@ -481,7 +486,7 @@ class BHShape(object):
       raise RuntimeError("Corrupt AH file, missing origin.")
     #
     patches = {p:numpy.transpose(numpy.array(d), axes=(2,0,1)) 
-               for p,d in patches.iteritems()}
+               for p,d in patches.items()}
     return patches, orig        
   #
 #
@@ -552,7 +557,7 @@ class CactusAH(object):
     
     diags    = self._scan_dirs_diags(sd.allfiles)
     self.horizons = [self._make_horizon(idx, dg, sd.allfiles, params,tsc)
-                     for idx,dg in diags.items()]
+                     for idx,dg in list(diags.items())]
     self.horizons.sort(key=lambda d : -d.ah.max_rmean)
     self.found_any = (len(self.horizons) > 0)
     if self.found_any:
@@ -604,7 +609,7 @@ class CactusAH(object):
       p     = params.ahfinderdirect.which_surface_to_store_info
       sidx  = int(p[hidx])
       return IsolatedHorizon(sidx, tsc)
-    except Exception, e:
+    except Exception as e:
       dummy = {}
       return IsolatedHorizon(-1, dummy)
     #
