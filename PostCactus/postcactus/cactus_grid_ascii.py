@@ -139,7 +139,7 @@ class GridASCIIFile(object):
     self.open()
     s = self._comps.get(it)
     if s is None: return None
-    s = s.get(lvl)
+    s = s.get(level)
     if s is None: return None
     s = list(s.values())
     if not s: return None
